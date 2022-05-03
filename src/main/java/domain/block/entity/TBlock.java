@@ -2,12 +2,11 @@ package domain.block.entity;
 
 public class TBlock extends Block {
     
-    public TBlock(int color) {
+    public TBlock() {
         shape = new int[][] {
             {0, 1, 0},
 			{1, 1, 1}
         };
-        this.color = color;
         isRotatable = true;
         isMovable = true;
     }
