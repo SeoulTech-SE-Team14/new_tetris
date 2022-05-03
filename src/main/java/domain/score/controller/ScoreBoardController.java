@@ -1,5 +1,9 @@
 package domain.score.controller;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import domain.score.dao.ScoreBoardDao;
 import domain.score.entity.Score;
 
@@ -13,15 +17,27 @@ public class ScoreBoardController {
 
     private ScoreBoardDao scoreDao = ScoreBoardDao.getInstance();
 
-    public Score[] getScoreBoard() {
+
+    public List<Score> getScoreBoard() {
         return scoreDao.read();
     }
 
-    // 상위 15개만 생성
-    // 15개 이상이면 가장 스코어가 낮은 것을 지우고 현재 점수를 추가하고 sort
-    public void appendScoreBoard(Score score) {
-        //
+    public List<Score> appendScoreBoard(Score score) {
+        List<Score> scores = scoreDao.read();
+
+        if (scores.size() == 15)
+            scores.remove(14);
+
+        scores.add(score);
+        Collections.sort(scores);
+
+        scoreDao.write(scores);
+
+        return scores;
     }
 
-
+    public void removeAll() {
+        List<Score> scores = new ArrayList<>();
+        scoreDao.write(scores);
+    }
 }

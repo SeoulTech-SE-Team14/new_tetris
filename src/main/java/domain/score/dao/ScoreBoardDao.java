@@ -1,9 +1,14 @@
 package domain.score.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+
 import domain.score.entity.Score;
 import global.dao.JsonDao;
 
-public class ScoreBoardDao extends JsonDao<Score[]> {
+public class ScoreBoardDao extends JsonDao<List<Score>> {
 
     private static ScoreBoardDao INSTANCE = new ScoreBoardDao();
 
@@ -12,10 +17,10 @@ public class ScoreBoardDao extends JsonDao<Score[]> {
     }
 
     private ScoreBoardDao() {
-        super(new Score[]{});
+        super(new ArrayList<Score>());
     }
     
-    public Score[] read() {
-        return super.read(Score[].class);
+    public List<Score> read() {
+        return super.read(new TypeReference<List<Score>>(){});
     }
 }
