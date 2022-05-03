@@ -10,15 +10,22 @@ public class WindowSizeConfigController {
     public static WindowSizeConfigController getInstance() {
         return INSTANCE;
     }
+
     
     private WindowSizeConfigDao windowSizeConfigDao = WindowSizeConfigDao.getInstance();
+
+
+    private WindowSizeConfigController() {
+
+    }
+
 
     public WindowSizeConfig getDefault() {
         return new WindowSizeConfig();
     }
 
     public WindowSizeConfig getW800_H600() {
-        return new WindowSizeConfig();
+        return getDefault();
     }
 
     public WindowSizeConfig getW1280_H960() {
