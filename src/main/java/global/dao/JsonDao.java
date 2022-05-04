@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import com.fasterxml.jackson.core.exc.StreamWriteException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -30,6 +31,16 @@ public class JsonDao<T> {
 
 
     protected T read(Class<T> valueType) {
+        try {
+            return mapper.readValue(file, valueType);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    protected T read(TypeReference<T> valueType) {
         try {
             return mapper.readValue(file, valueType);
         } catch (IOException e) {
