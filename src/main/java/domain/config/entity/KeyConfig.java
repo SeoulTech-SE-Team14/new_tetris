@@ -34,12 +34,12 @@ public class KeyConfig {
 
 
     private EnumMap<KeyType, Integer> initDefaultKeyMap() {
-        EnumMap<KeyType, Integer> ret = new EnumMap<>(KeyType.class);
+        keyMap = new EnumMap<>(KeyType.class);
 
         setDefaultPlayerOneKey();
         setDefaultPlayerTwoKey();
 
-        return ret;
+        return keyMap;
     }
     
     private void setDefaultPlayerOneKey() {
@@ -64,5 +64,13 @@ public class KeyConfig {
 
     public void put(KeyType key, int value) {
         keyMap.put(key, value);
+    }
+
+    public EnumMap<KeyType, Integer> getKeyMap() {
+        return keyMap;
+    }
+
+    public void setKeyMap(EnumMap<KeyType, Integer> keyMap) {
+        this.keyMap = keyMap;
     }
 }

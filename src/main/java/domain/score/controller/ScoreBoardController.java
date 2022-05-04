@@ -23,5 +23,7 @@ public class ScoreBoardController {
         //
     }
 
-
+    public void removeAll() {
+        
+    }
 }

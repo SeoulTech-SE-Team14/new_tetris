@@ -9,6 +9,7 @@ public class BlockColorConfig {
     private static final int DEFAULT_TBLOCK_COLOR = 0x800080; // PURPLE;
     private static final int DEFAULT_ZBLOCK_COLOR = 0xff0000; // RED
     
+    private String type;
     
     private int iBlockColor;
     private int jBlockColor;
@@ -19,8 +20,10 @@ public class BlockColorConfig {
     private int zBlockColor;
 
 
-    public BlockColorConfig(int iBlockColor, int jBlockColor, int lBlockColor, int oBlockColor,
+    public BlockColorConfig(String type, int iBlockColor, int jBlockColor, int lBlockColor, int oBlockColor,
         int sBlockColor, int tBlockColor, int zBlockColor) {
+
+        this.type = type;
         
         this.iBlockColor = iBlockColor;
         this.jBlockColor = jBlockColor;
@@ -32,10 +35,13 @@ public class BlockColorConfig {
     }
 
     public BlockColorConfig() {
-        this(DEFAULT_IBLOCK_COLOR, DEFAULT_JBLOCK_COLOR, DEFAULT_LBLOCK_COLOR, DEFAULT_OBLOCK_COLOR, 
+        this("Default", DEFAULT_IBLOCK_COLOR, DEFAULT_JBLOCK_COLOR, DEFAULT_LBLOCK_COLOR, DEFAULT_OBLOCK_COLOR, 
             DEFAULT_SBLOCK_COLOR, DEFAULT_TBLOCK_COLOR, DEFAULT_ZBLOCK_COLOR);
     }
 
+    public String getType() {
+        return type;
+    }
 
     public int getiBlockColor() {
         return iBlockColor;

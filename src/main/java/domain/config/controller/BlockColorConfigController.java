@@ -35,7 +35,7 @@ public class BlockColorConfigController {
         int tBlockColor = ProtanopiaBlockColor.TBLOCK.getColor();
         int zBlockColor = ProtanopiaBlockColor.ZBLOCK.getColor();
 
-        return new BlockColorConfig(iBlockColor, jBlockColor, lBlockColor
+        return new BlockColorConfig("Protanopia", iBlockColor, jBlockColor, lBlockColor
             , oBlockColor, sBlockColor, tBlockColor, zBlockColor);
     }
 
@@ -48,7 +48,7 @@ public class BlockColorConfigController {
         int tBlockColor = TritanopiaBlockColor.TBLOCK.getColor();
         int zBlockColor = TritanopiaBlockColor.ZBLOCK.getColor();
 
-        return new BlockColorConfig(iBlockColor, jBlockColor, lBlockColor
+        return new BlockColorConfig("Tritanopia", iBlockColor, jBlockColor, lBlockColor
             , oBlockColor, sBlockColor, tBlockColor, zBlockColor);
     }
 

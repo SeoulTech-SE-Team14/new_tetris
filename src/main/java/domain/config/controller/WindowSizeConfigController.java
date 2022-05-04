@@ -25,15 +25,19 @@ public class WindowSizeConfigController {
     }
 
     public WindowSizeConfig getW800_H600() {
-        return getDefault();
+        return new WindowSizeConfig(800, 600);
     }
 
     public WindowSizeConfig getW1280_H960() {
-        return new WindowSizeConfig();
+        return new WindowSizeConfig(1280, 960);
     }
 
     public WindowSizeConfig getW1920_H1080() {
-        return new WindowSizeConfig();
+        return new WindowSizeConfig(1920, 1080);
+    }
+
+    public WindowSizeConfig getCurrentConfig() {
+        return windowSizeConfigDao.read();
     }
 
     public void update(WindowSizeConfig object) {
