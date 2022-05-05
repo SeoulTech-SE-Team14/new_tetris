@@ -1,4 +1,6 @@
-package domain.block.entity;
+package domain.block.entity.tetromino;
+
+import domain.block.entity.Block;
 
 public class JBlock extends Block{
     
