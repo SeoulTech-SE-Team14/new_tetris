@@ -18,18 +18,15 @@ public class BoardPanel extends JPanel {
     private final int BOARD_WIDTH = 10;
     private final int BOARD_HEIGHT = 20;
 
-    private Board board;
-
     private BoardController boardController = BoardController.getInstance();
 
-    public BoardPanel(Board board) {
-        initBoard(board);
+    public BoardPanel() {
+        initBoard();
         initPanel();
-        this.board = board;
     }
 
-    private void initBoard(Board board) {
-        boardController.init(board);
+    private void initBoard() {
+        boardController.init();
     }
 
     private void initPanel() {
@@ -59,11 +56,11 @@ public class BoardPanel extends JPanel {
     }
 
     public void drawBoard(Graphics g) {
-        int[][][] tBoard = board.getBoard();
+        int[][][] tBoard = boardController.getBoard().getBoard();
 
         for (int r = 4; r < 24; r++) {
             for (int c = 0; c < 10; c++) {
-                Color color = new Color(board.getBoard()[r][c][Board.COLOR]);
+                Color color = new Color(tBoard[r][c][Board.COLOR]);
                 String shape;
                 if (tBoard[r][c][0] == Board.TYPE_LINE_REMOVER) {
                     shape = "L";
@@ -79,8 +76,8 @@ public class BoardPanel extends JPanel {
     }
 
     public void drawNowBlock(Graphics g) {
-        Block nowBlock = board.getNowBlock();
-        int[][] nowBlockPos = boardController.findCurBlockPosInBoard(board);
+        Block nowBlock = boardController.getBoard().getNowBlock();
+        int[][] nowBlockPos = boardController.findCurBlockPosInBoard();
         int lineRemoverIdx = boardController.findLineRemover(nowBlock);
         int count = IntMatrixUtil.countNotZeroValue(nowBlock.getShape());
 
@@ -92,13 +89,13 @@ public class BoardPanel extends JPanel {
             //Color color = new Color(board.getNowBlock().getColor());
             Color color = new Color(123,123,123);
             String shape;
-            if (nowBlock instanceof BombItem) {
+            if(nowBlock instanceof BombItem) {
                 shape = "B";
             }
-            else if (nowBlock instanceof  DrillItem) {
+            else if(nowBlock instanceof DrillItem) {
                 shape = "D";
             }
-            else if (i == lineRemoverIdx) {
+            else if(i == lineRemoverIdx) {
                 shape = "L";
             }
             else {
@@ -140,8 +137,7 @@ public class BoardPanel extends JPanel {
 
         GridLayout gl = new GridLayout(1, 1);
         frame.setLayout(gl);
-        Board board = new Board();
-        frame.add(new BoardPanel(board));
+        frame.add(new BoardPanel());
         frame.setVisible(true);
     }
 }
