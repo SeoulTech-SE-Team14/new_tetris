@@ -3,10 +3,14 @@ package domain.block.controller;
 import domain.block.entity.Block;
 import domain.block.entity.itemBlock.*;
 import domain.block.entity.tetromino.*;
+import domain.config.controller.DifficultyConfigController;
+import domain.config.entity.DifficultyConfig;
 
 public class BlockController {
 
     private static BlockController INSTANCE = new BlockController();
+    private static DifficultyConfig difficultyConfig = DifficultyConfigController.getInstance().getCurrentConfig();
+    
 
     public static BlockController getInstance() {
         return INSTANCE;
@@ -40,24 +44,26 @@ public class BlockController {
     }
 
     public Block getRandomBlock() {
-        int seed = (int)(Math.random()*7);
-        switch(seed){
-            case 0:
-                return new IBlock();
-            case 1:
-                return new JBlock();
-            case 2:
-                return new LBlock();
-            case 3:
-                return new OBlock();
-            case 4:
-                return new SBlock();
-            case 5:
-                return new TBlock();
-            case 6:
-                return new ZBlock();
-            default:
-                return null;
+        double[] previousProbability = difficultyConfig.getPreviousProbability();
+        int sumOfFitness = difficultyConfig.getSumOfFitness();
+        int seed = (int)(Math.random()*sumOfFitness);
+
+        if(seed<=previousProbability[0]){
+            return new IBlock();
+        }else if(seed<=previousProbability[1]){
+            return new JBlock();
+        }else if(seed<=previousProbability[2]){
+            return new LBlock();
+        }else if(seed<=previousProbability[3]){
+            return new OBlock();
+        }else if(seed<=previousProbability[4]){
+            return new SBlock();
+        }else if(seed<=previousProbability[5]){
+            return new TBlock();
+        }else if(seed<=previousProbability[6]){
+            return new ZBlock();
+        }else{
+            return null;
         }
     }
 
