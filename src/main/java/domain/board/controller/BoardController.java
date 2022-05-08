@@ -3,6 +3,7 @@ package domain.board.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import domain.block.controller.BlockController;
 import domain.block.entity.Block;
 import domain.block.entity.itemBlock.BombItem;
 import domain.block.entity.itemBlock.BonusScoreItem;
@@ -105,11 +106,11 @@ public class BoardController {
         board.setyPos(5);
         board.setxPos(5 - board.getNowBlock().getShape().length - center[0]);
         if (isItemMode && lineCount >= PER_LINES) {
-            //board.setPrevBlock(blockService.getRandomItem());
+            board.setPrevBlock(BlockController.getInstance().getRandomItem());
             lineCount %= PER_LINES;
         }
         else {
-            //board.setPrevBlock(blockService.getRandomBlock());
+            board.setPrevBlock(BlockController.getInstance().getRandomItem());
         }
     }
     public void init() {
@@ -128,8 +129,7 @@ public class BoardController {
 
         lineCount = 0;
 
-        // 수정 필요
-        //board.setPrevBlock(blockController.getInstance().getRandomBlock());
+        board.setPrevBlock(BlockController.getInstance().getRandomBlock());
         board.setPrevBlock(new TBlock());
         updateCurBlock();
     }
@@ -249,7 +249,7 @@ public class BoardController {
                             continue;
                         }
                     }
-                    removePos(board, curBlockPosInBoard);
+                    removePos(curBlockPosInBoard);
                 }
                 else {
                     for (int i = 0; i < IntMatrixUtil.countNotZeroValue(block.getShape()); i++) {

@@ -4,6 +4,8 @@ import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
 import domain.block.entity.Block;
+import domain.block.entity.itemBlock.BombItem;
+import domain.block.entity.itemBlock.DrillItem;
 import domain.board.constant.BoardComponent;
 import domain.board.constant.map.BoardColorMap;
 import domain.board.controller.BoardController;
@@ -63,7 +65,8 @@ public class NextBlockPanel extends JPanel {
             int x = nextBlockPos[i][1];
             int y = nextBlockPos[i][0];
 
-            Color color = new Color(board.getPrevBlock().getColor());
+            //Color color = new Color(board.getPrevBlock().getColor());
+            Color color = new Color(123,122,222);
             String shape;
             Block nextBlock = board.getPrevBlock();
             int lineRemoverIdx = BoardController.getInstance().findLineRemover(nextBlock);
