@@ -1,25 +1,28 @@
 package view.abstractComponent.frame;
 
 import javax.swing.JFrame;
+
 import java.awt.*;
 
-import domain.config.dao.WindowSizeConfigDao;
+import domain.config.controller.WindowSizeConfigController;
+import domain.config.entity.WindowSizeConfig;
 
 public class DefaultFrame extends JFrame {
+    
+    private static final String title = "Tetris";
 
-    //private WindowSizeConfigDao windowSizeConfigDao = WindowSizeConfigDao.getInstance();
 
-    private final String title = "Tetris";
+    protected final WindowSizeConfigController windowSizeConfigController = WindowSizeConfigController.getInstance();
+    protected WindowSizeConfig windowSizeConfig;
 
-    public DefaultFrame(){
+
+    public DefaultFrame() {
+        windowSizeConfig = windowSizeConfigController.getCurrentConfig();
 
         setTitle(title);
-
-        //setSize(windowSizeConfigDao.read().getWidth(),
-        // windowSizeConfigDao.read().getHeight());
-        setSize(800, 600);
+        setSize(windowSizeConfig.getWidth(), windowSizeConfig.getHeight());
         setResizable(false);
-        setBackground(Color.BLACK);
+        getContentPane().setBackground(Color.BLACK);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -27,7 +30,8 @@ public class DefaultFrame extends JFrame {
         setVisible(true);
     }
 
-    public static void main(String[] args){
+
+    public static void main(String[] args) {
         new DefaultFrame();
     }
 }

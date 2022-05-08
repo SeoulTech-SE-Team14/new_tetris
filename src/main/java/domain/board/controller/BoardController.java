@@ -9,8 +9,6 @@ import domain.block.entity.itemBlock.BombItem;
 import domain.block.entity.itemBlock.BonusScoreItem;
 import domain.block.entity.itemBlock.DrillItem;
 import domain.block.entity.itemBlock.WeightItem;
-import domain.block.entity.tetromino.IBlock;
-import domain.block.entity.tetromino.TBlock;
 import domain.board.constant.BoardComponent;
 import domain.board.constant.map.BoardColorMap;
 import domain.board.entity.Board;
@@ -102,9 +100,9 @@ public class BoardController {
     // spawn block method ?
     private void updateCurBlock() {
         board.setNowBlock(board.getPrevBlock());
-        int[] center = IntMatrixUtil.findNearestCenter(board.getNowBlock().getShape());
         board.setyPos(5);
-        board.setxPos(5 - board.getNowBlock().getShape().length - center[0]);
+        board.setxPos(5 - IntMatrixUtil.lengthCenterToBottom(board.getNowBlock().getShape()));
+
         if (isItemMode && lineCount >= PER_LINES) {
             board.setPrevBlock(BlockController.getInstance().getRandomItem());
             lineCount %= PER_LINES;
@@ -130,7 +128,6 @@ public class BoardController {
         lineCount = 0;
 
         board.setPrevBlock(BlockController.getInstance().getRandomBlock());
-        board.setPrevBlock(new TBlock());
         updateCurBlock();
     }
 

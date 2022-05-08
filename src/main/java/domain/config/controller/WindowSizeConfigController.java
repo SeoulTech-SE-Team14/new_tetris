@@ -10,23 +10,34 @@ public class WindowSizeConfigController {
     public static WindowSizeConfigController getInstance() {
         return INSTANCE;
     }
+
     
     private WindowSizeConfigDao windowSizeConfigDao = WindowSizeConfigDao.getInstance();
+
+
+    private WindowSizeConfigController() {
+
+    }
+
 
     public WindowSizeConfig getDefault() {
         return new WindowSizeConfig();
     }
 
     public WindowSizeConfig getW800_H600() {
-        return new WindowSizeConfig();
+        return new WindowSizeConfig(800, 600);
     }
 
     public WindowSizeConfig getW1280_H960() {
-        return new WindowSizeConfig();
+        return new WindowSizeConfig(1280, 960);
     }
 
     public WindowSizeConfig getW1920_H1080() {
-        return new WindowSizeConfig();
+        return new WindowSizeConfig(1920, 1080);
+    }
+
+    public WindowSizeConfig getCurrentConfig() {
+        return windowSizeConfigDao.read();
     }
 
     public void update(WindowSizeConfig object) {

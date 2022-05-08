@@ -1,0 +1,16 @@
+package domain.config.constant.key;
+
+public enum KeyType {
+
+    P1_BLOCK_ROTATE,
+    P1_BLOCK_MOVE_DOWN,
+    P1_BLOCK_MOVE_DOWN_AT_ONCE,
+    P1_BLOCK_MOVE_LEFT,
+    P1_BLOCK_MOVE_RIGHT,
+
+    P2_BLOCK_ROTATE,
+    P2_BLOCK_MOVE_DOWN,
+    P2_BLOCK_MOVE_DOWN_AT_ONCE,
+    P2_BLOCK_MOVE_LEFT,
+    P2_BLOCK_MOVE_RIGHT,
+}

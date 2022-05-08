@@ -9,18 +9,23 @@ import domain.board.controller.BoardController;
 import domain.board.entity.Board;
 import global.matrix.IntMatrixUtil;
 import view.abstractComponent.frame.DefaultFrame;
-import view.frame.GameFrame;
-import view.keyListener.GameKeyListener;
 
 import java.awt.*;
 
 public class BoardPanel extends JPanel {
-    private final int BOARD_WIDTH = 10;
-    private final int BOARD_HEIGHT = 20;
+    private final int PANEL_WIDTH;
+    private final int PANEL_HEIGHT;
+    private final int BOARD_WIDTH;
+    private final int BOARD_HEIGHT;
 
     private BoardController boardController = BoardController.getInstance();
 
-    public BoardPanel() {
+    public BoardPanel(int panelWidth, int panelHeight, int boardWidth, int boardHeight) {
+        this.PANEL_WIDTH = panelWidth;
+        this.PANEL_HEIGHT = panelHeight;
+        this.BOARD_WIDTH = boardWidth;
+        this.BOARD_HEIGHT = boardHeight;
+
         initBoard();
         initPanel();
     }
@@ -31,9 +36,9 @@ public class BoardPanel extends JPanel {
 
     private void initPanel() {
         setBackground(Color.BLACK);
-        setPreferredSize(new Dimension(400, 800));
+        setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
         setFocusable(true);
-        addKeyListener(new GameKeyListener());
+        //addKeyListener(new GameKeyListener());
     }
 
     private int squareWidth() {
@@ -86,8 +91,7 @@ public class BoardPanel extends JPanel {
             int y = nowBlockPos[i][0] - 4;
 
             // 수정 필요
-            //Color color = new Color(board.getNowBlock().getColor());
-            Color color = new Color(123,123,123);
+            Color color = new Color(nowBlock.getColor());
             String shape;
             if(nowBlock instanceof BombItem) {
                 shape = "B";
@@ -134,10 +138,9 @@ public class BoardPanel extends JPanel {
     public static void main(String[] args) {
 
         DefaultFrame frame = new DefaultFrame();
-
         GridLayout gl = new GridLayout(1, 1);
         frame.setLayout(gl);
-        frame.add(new BoardPanel());
+        frame.add(new BoardPanel(300, 300, 4, 4));
         frame.setVisible(true);
     }
 }
