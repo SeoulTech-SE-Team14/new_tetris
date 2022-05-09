@@ -17,7 +17,6 @@ import global.matrix.IntMatrixUtil;
 public class BoardController {
 
     private static BoardController INSTANCE = new BoardController();
-
     public static BoardController getInstance() {
         return INSTANCE;
     }
@@ -32,6 +31,26 @@ public class BoardController {
     public BoardController() {
         board = new Board();
     }
+
+    public boolean isPause() {
+        return isPause;
+    }
+
+    public boolean isItemMode() {
+        return isItemMode;
+    }
+    public boolean getForceQuit() {
+        return forceQuit;
+    }
+
+    public void setForceQuit() {
+        forceQuit = true;
+    }
+
+    public void setItemMode() {
+        isItemMode = true;
+    }
+
 
     private boolean isItem(int[][] shape, int i) {
         for (int r = 0; r < shape.length; r++) {
@@ -57,7 +76,7 @@ public class BoardController {
         int[][][] tBoard = board.getBoard();
         Block block = board.getNowBlock();
         int[][] curBlockPosInBoard = findCurBlockPosInBoard();
-        //int blockColor = block.getColor();
+        int blockColor = BlockController.getInstance().getBlockColor(block);
         int lineRemoverIdx = findLineRemover(block);
         if (block instanceof BombItem) {
             for (int r = -1; r <= 1; r++) {
@@ -74,12 +93,12 @@ public class BoardController {
             }
         }
         else if (block instanceof BonusScoreItem) {
-            //scoreService.updateScore(5, GameFrame.periodInterval);
+            //ScoreController.getInstance().updateScore(5, GameFrame.periodInterval);
             for (int i = 0; i < IntMatrixUtil.countNotZeroValue(block.getShape()); i++) {
                 int xPos = curBlockPosInBoard[i][0];
                 int yPos = curBlockPosInBoard[i][1];
                 tBoard[xPos][yPos][Board.TYPE] = Board.TYPE_STATIC;
-                //tBoard[xPos][yPos][Board.COLOR] = blockColor;
+                tBoard[xPos][yPos][Board.COLOR] = blockColor;
             }
         }
         else {
@@ -92,11 +111,12 @@ public class BoardController {
                 else {
                     tBoard[xPos][yPos][Board.TYPE] = Board.TYPE_STATIC;
                 }
-                //tBoard[xPos][yPos][Board.COLOR] = blockColor;
+                tBoard[xPos][yPos][Board.COLOR] = blockColor;
             }
         }
         lineCount += findFullLine().size();
     }
+
     // spawn block method ?
     private void updateCurBlock() {
         board.setNowBlock(board.getPrevBlock());
@@ -192,20 +212,22 @@ public class BoardController {
         }
         return lines;
     }
-    public void eraseFullLine() {
-        int[][][] newBoard = board.getBoard();
-        List<Integer> fullLines = findFullLine();
-        for (int fullLine : fullLines) {
-            for(int row = fullLine; row > 0; row--) {
-                newBoard[row] = newBoard[row - 1];
-            }
-            newBoard[0] = new int[10][2];
-            for(int col = 0; col < 10; col++) {
-                newBoard[0][col][Board.TYPE] = Board.TYPE_EMPTY;
-                newBoard[0][col][Board.COLOR] = BoardColorMap.getColor(BoardComponent.EMPTY);
-            }
+
+    public void deleteFullLine(List<Integer> toDelete) {
+        for (Integer i : toDelete) {
+            moveBoardLineDown(board.getBoard(), i);
         }
-        board.setBoard(newBoard);
+    }
+    private void moveBoardLineDown(int[][][] board, int deletedRow) {
+        for (int i = deletedRow; i > 0; i--) {
+            board[i] = board[i - 1];
+        }
+
+        board[0] = new int[10][2];
+        for (int i = 0; i < 10; i++) {
+            board[0][i][Board.TYPE] = Board.TYPE_EMPTY;
+            board[0][i][Board.COLOR] = BoardColorMap.getColor(BoardComponent.EMPTY);
+        }
     }
     public void moveLeft() {
         Block block = board.getNowBlock();
@@ -261,7 +283,7 @@ public class BoardController {
             }
         }
     }
-    public void moveDown() {
+    public boolean moveDown() {
         Block block = board.getNowBlock();
         int[][] blockShape = block.getShape();
         int[][] curBlockPosInBoard = findCurBlockPosInBoard();
@@ -288,6 +310,7 @@ public class BoardController {
                     if (board.getBoard()[curBlockPosInBoard[i][0] + 1][curBlockPosInBoard[i][1]][Board.TYPE] != Board.TYPE_EMPTY) {
                         convertBlockToBoard();
                         updateCurBlock();
+                        return true;
                     }
                 }
             }
@@ -307,16 +330,22 @@ public class BoardController {
                 convertBlockToBoard();
                 updateCurBlock();
             }
+            return true;
         }
+        return false;
     }
-    public void moveDownAtOnce(Board board) {
-        try {
-            for (int i = 0; i < 20; i++) {
-                moveDown();
-            }
-        } catch (ArrayIndexOutOfBoundsException e) {
-            eraseFullLine();
-            updateCurBlock();
+    public boolean moveDownAtOnce() {
+
+        while (!moveDown()) {}
+
+        return true;
+    }
+    public boolean isDead() {
+        final int[][] test = board.getBoard()[3];
+        for (int x = 0; x < 10; x++) {
+            if (test[x][Board.TYPE] != Board.TYPE_EMPTY)
+                return true;
         }
+        return false;
     }
 }

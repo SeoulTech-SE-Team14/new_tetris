@@ -3,14 +3,18 @@ package domain.block.controller;
 import domain.block.entity.Block;
 import domain.block.entity.itemBlock.*;
 import domain.block.entity.tetromino.*;
+import domain.config.controller.BlockColorConfigController;
 import domain.config.controller.DifficultyConfigController;
+import domain.config.entity.BlockColorConfig;
 import domain.config.entity.DifficultyConfig;
+
+import java.awt.*;
 
 public class BlockController {
 
     private static BlockController INSTANCE = new BlockController();
     private static DifficultyConfig difficultyConfig = DifficultyConfigController.getInstance().getCurrentConfig();
-    
+    private static BlockColorConfigController blockController = BlockColorConfigController.getInstance();
 
     public static BlockController getInstance() {
         return INSTANCE;
@@ -42,28 +46,49 @@ public class BlockController {
         block.setShape(blockShape);
         return block;
     }
+    public int getBlockColor(Block block) {
 
+        if(block instanceof IBlock) {
+            return blockController.getDefault().getiBlockColor();
+        } else if(block instanceof JBlock) {
+            return blockController.getDefault().getjBlockColor();
+        }  else if(block instanceof LBlock) {
+            return blockController.getDefault().getlBlockColor();
+        } else if(block instanceof OBlock) {
+            return blockController.getDefault().getoBlockColor();
+        } else if(block instanceof SBlock) {
+            return blockController.getDefault().getsBlockColor();
+        } else if(block instanceof TBlock) {
+            return blockController.getDefault().gettBlockColor();
+        } else if(block instanceof ZBlock) {
+            return blockController.getDefault().getzBlockColor();
+        } else {
+            return 0xffffff;
+        }
+    }
     public Block getRandomBlock() {
         double[] previousProbability = difficultyConfig.getPreviousProbability();
         int sumOfFitness = difficultyConfig.getSumOfFitness();
         int seed = (int)(Math.random()*sumOfFitness);
 
-        if(seed<=previousProbability[0]){
+        double threshold = (double)seed / sumOfFitness;
+        if(threshold <= previousProbability[0]){
             return new IBlock();
-        }else if(seed<=previousProbability[1]){
+        }else if(threshold <= previousProbability[1]){
             return new JBlock();
-        }else if(seed<=previousProbability[2]){
+        }else if(threshold <= previousProbability[2]){
             return new LBlock();
-        }else if(seed<=previousProbability[3]){
+        }else if(threshold <= previousProbability[3] ){
             return new OBlock();
-        }else if(seed<=previousProbability[4]){
+        }else if(threshold <= previousProbability[4]){
             return new SBlock();
-        }else if(seed<=previousProbability[5]){
+        }else if(threshold <= previousProbability[5]){
             return new TBlock();
-        }else if(seed<=previousProbability[6]){
+        }else if(threshold <= previousProbability[6]){
             return new ZBlock();
         }else{
-            return null;
+            //return null;
+            return new IBlock();
         }
     }
 
