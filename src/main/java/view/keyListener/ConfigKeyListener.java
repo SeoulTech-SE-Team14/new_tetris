@@ -14,12 +14,12 @@ public class ConfigKeyListener extends KeyAdapter {
 
     private ConfigFrame frame;
 
-    WindowSizeConfigPanel windowSizeConfigPanel;
-    BlockColorConfigPanel blockColorConfigPanel;
-    DifficultyConfigPanel difficultyConfigPanel;
-    P1KeyConfigPanel p1KeyConfigPanel;
-    P2KeyConfigPanel p2KeyConfigPanel;
-    OtherConfigPanel otherConfigPanel;
+    private WindowSizeConfigPanel windowSizeConfigPanel;
+    private BlockColorConfigPanel blockColorConfigPanel;
+    private DifficultyConfigPanel difficultyConfigPanel;
+    private P1KeyConfigPanel p1KeyConfigPanel;
+    private P2KeyConfigPanel p2KeyConfigPanel;
+    private OtherConfigPanel otherConfigPanel;
 
     private ScoreBoardController scoreBoardController = ScoreBoardController.getInstance();
 
