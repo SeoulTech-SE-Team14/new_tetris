@@ -3,6 +3,7 @@ package view.abstractComponent.panel.game;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
+import domain.block.controller.BlockController;
 import domain.block.entity.Block;
 import domain.block.entity.itemBlock.BombItem;
 import domain.block.entity.itemBlock.DrillItem;
@@ -15,8 +16,6 @@ import global.matrix.IntMatrixUtil;
 import java.awt.*;
 
 public class NextBlockPanel extends JPanel {
-
-    protected Block nextBlock;
     private LineBorder lineBorder = new LineBorder(Color.WHITE);
 
     public NextBlockPanel() {
@@ -24,33 +23,24 @@ public class NextBlockPanel extends JPanel {
         setPreferredSize(new Dimension(300, 300));
         setBorder(lineBorder);
     }
-
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        drawNextBlock(g);
-    }
-
     private int squareWidth() {
         return (int) getSize().getWidth() / 4;
     }
-
     private int squareHeight() {
         return (int) getSize().getHeight() / 4;
     }
 
+    // draw method
     private void drawSquare(Graphics g, int x, int y, Color color) {
         g.setColor(color);
         g.fillRect(x + 1, y + 1, squareWidth() - 2, squareHeight() - 2);
     }
-
     private void drawText(Graphics g, int x, int y, Color color, String shape) {
         int fontSize = (int)(squareWidth());
         g.setColor(color);
         g.setFont(new Font("Serif", Font.BOLD, fontSize));
         g.drawString(shape, x * squareWidth(), (int)((y + 1) * squareWidth() * .74));
     }
-
     public void drawNextBlock(Graphics g) {
         Board board = BoardController.getInstance().getBoard();
         int[][] nextBlockPos = IntMatrixUtil.findAllNotZeroValuePos(board.getPrevBlock().getShape(), IntMatrixUtil.countNotZeroValue(board.getPrevBlock().getShape()));
@@ -65,10 +55,9 @@ public class NextBlockPanel extends JPanel {
             int x = nextBlockPos[i][1];
             int y = nextBlockPos[i][0];
 
-            //Color color = new Color(board.getPrevBlock().getColor());
-            Color color = new Color(123,122,222);
-            String shape;
             Block nextBlock = board.getPrevBlock();
+            Color color = new Color(BlockController.getInstance().getBlockColor(nextBlock));
+            String shape;
             int lineRemoverIdx = BoardController.getInstance().findLineRemover(nextBlock);
             if (nextBlock instanceof BombItem) {
                 shape = "B";
@@ -83,9 +72,13 @@ public class NextBlockPanel extends JPanel {
                 shape = "O";
             }
 
-            //drawSquare(g, x * squareWidth(), y * squareHeight(), color);
-            //drawText(g, x, y, color, "O");
             drawText(g, x, y, color, shape);
         }
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        drawNextBlock(g);
     }
 }

@@ -2,29 +2,28 @@ package view.abstractComponent.panel.game;
 
 import javax.swing.JPanel;
 
+import domain.block.controller.BlockController;
 import domain.block.entity.Block;
 import domain.block.entity.itemBlock.BombItem;
 import domain.block.entity.itemBlock.DrillItem;
 import domain.board.controller.BoardController;
 import domain.board.entity.Board;
 import global.matrix.IntMatrixUtil;
-import view.abstractComponent.frame.DefaultFrame;
 
 import java.awt.*;
 
 public class BoardPanel extends JPanel {
     private final int PANEL_WIDTH;
     private final int PANEL_HEIGHT;
-    private final int BOARD_WIDTH;
-    private final int BOARD_HEIGHT;
+    private final int BOARD_WIDTH = 10;
+    private final int BOARD_HEIGHT = 20;
 
     private BoardController boardController = BoardController.getInstance();
 
-    public BoardPanel(int panelWidth, int panelHeight, int boardWidth, int boardHeight) {
+    // 패널 크기 조절할 수 있게 매개변수로 받는다.
+    public BoardPanel(int panelWidth, int panelHeight) {
         this.PANEL_WIDTH = panelWidth;
         this.PANEL_HEIGHT = panelHeight;
-        this.BOARD_WIDTH = boardWidth;
-        this.BOARD_HEIGHT = boardHeight;
 
         initBoard();
         initPanel();
@@ -33,12 +32,10 @@ public class BoardPanel extends JPanel {
     private void initBoard() {
         boardController.init();
     }
-
     private void initPanel() {
         setBackground(Color.BLACK);
         setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
         setFocusable(true);
-        //addKeyListener(new GameKeyListener());
     }
 
     private int squareWidth() {
@@ -48,18 +45,17 @@ public class BoardPanel extends JPanel {
         return (int) getSize().getHeight() / BOARD_HEIGHT;
     }
 
+    // draw method
     private void drawSquare(Graphics g, int x, int y, Color color) {
         g.setColor(color);
         g.fillRect(x + 1, y + 1, squareWidth() - 2, squareHeight() - 2);
     }
-
     private void drawText(Graphics g, int x, int y, Color color, String shape) {
-        int fontSize = (int)(squareWidth());
+        int fontSize = squareWidth();
         g.setColor(color);
         g.setFont(new Font("Serif", Font.BOLD, fontSize));
         g.drawString(shape, x * squareWidth(), (int)((y + 1) * squareWidth() * .74));
     }
-
     public void drawBoard(Graphics g) {
         int[][][] tBoard = boardController.getBoard().getBoard();
 
@@ -74,12 +70,9 @@ public class BoardPanel extends JPanel {
                     shape = "O";
                 }
                 drawText(g, c, (r - 4), color, shape);
-                //drawText(g, c, (r - 4), color, "O");
-                //drawSquare(g, c * squareWidth(), (r - 4) * squareHeight(), color);
             }
         }
     }
-
     public void drawNowBlock(Graphics g) {
         Block nowBlock = boardController.getBoard().getNowBlock();
         int[][] nowBlockPos = boardController.findCurBlockPosInBoard();
@@ -91,7 +84,7 @@ public class BoardPanel extends JPanel {
             int y = nowBlockPos[i][0] - 4;
 
             // 수정 필요
-            Color color = new Color(nowBlock.getColor());
+            Color color = new Color(BlockController.getInstance().getBlockColor(nowBlock));
             String shape;
             if(nowBlock instanceof BombItem) {
                 shape = "B";
@@ -105,9 +98,6 @@ public class BoardPanel extends JPanel {
             else {
                 shape = "O";
             }
-
-            //drawSquare(g, x * squareWidth(), y * squareHeight(), color);
-            //drawText(g, x, y, color, "O");
             drawText(g, x, y, color, shape);
         }
     }
@@ -133,14 +123,5 @@ public class BoardPanel extends JPanel {
 
         drawBoard(g);
         drawNowBlock(g);
-    }
-
-    public static void main(String[] args) {
-
-        DefaultFrame frame = new DefaultFrame();
-        GridLayout gl = new GridLayout(1, 1);
-        frame.setLayout(gl);
-        frame.add(new BoardPanel(300, 300, 4, 4));
-        frame.setVisible(true);
     }
 }
