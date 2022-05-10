@@ -12,6 +12,8 @@ import java.util.List;
 
 public class GamePanel extends JPanel {
     private List<Integer> toDelete = new ArrayList<>();
+    
+     WindowSizeConfig windowSize = WindowSizeConfigController.getInstance().getCurrentConfig();
 
     private BoardPanel boardPanel;
     private NextBlockPanel nextBlockPanel;
@@ -21,36 +23,55 @@ public class GamePanel extends JPanel {
     private JPanel eastPanel;
     private JPanel westPanel;
 
-    public GamePanel() {
+
+    public GamePanel(int width  , int height, int mode) {//multiGameFrame
         super();
+        init();
+        set(width, height);
         addComponents();
     }
 
-    public GamePanel(int mode) {
+    public GamePanel(int mode) {//singleGameFrame
         super();
+        init();
+        set();
         addComponents();
         BoardController.getInstance().setItemMode();
         //ScoreController.getInstance().setMode(mode);
     }
-    private void addComponents() {
-        WindowSizeConfig windowSize = WindowSizeConfigController.getInstance().getCurrentConfig();
 
-        setLayout(new BorderLayout());
-
+    private void init(){
         boardPanel = new BoardPanel(300, 300);
         nextBlockPanel = new NextBlockPanel();
         scorePanel = new ScorePanel();
+        previewPanel = new BoardPanel(300, 300);
 
         eastPanel = new JPanel();
         westPanel = new JPanel();
+    }
+    private void set(){
 
         westPanel.setBackground(Color.GRAY);
         westPanel.setPreferredSize(new Dimension((int)(windowSize.getWidth()/4), windowSize.getHeight()));
         eastPanel.setPreferredSize(new Dimension((int)(windowSize.getWidth()/4), windowSize.getHeight()/2));
         boardPanel.setPreferredSize(new Dimension((int)(windowSize.getWidth()/3), (int)(windowSize.getHeight()*0.9)));
-        nextBlockPanel.setPreferredSize(new Dimension((int)(windowSize.getWidth()/8), (int)(windowSize.getWidth()/8)));
-        scorePanel.setPreferredSize(new Dimension((int)(windowSize.getWidth()/8), (int)(windowSize.getWidth()/8)));
+        nextBlockPanel.setPreferredSize(new Dimension((int)(windowSize.getWidth()/6), (int)(windowSize.getWidth()/6)));
+        scorePanel.setPreferredSize(new Dimension((int)(windowSize.getWidth()/6), (int)(windowSize.getWidth()/6)));
 
+        setLayout(new BorderLayout());
+    }
+    private void set(int width, int height){//MultiGame
+
+        westPanel.setBackground(Color.GRAY);
+        westPanel.setPreferredSize(new Dimension(0, height));
+        eastPanel.setPreferredSize(new Dimension((int)(width*0.3), height/2));
+        boardPanel.setPreferredSize(new Dimension((int)(width*0.6), (int)(height*0.9)));
+        nextBlockPanel.setPreferredSize(new Dimension((int)(width/5), (int)(width/5)));
+        scorePanel.setPreferredSize(new Dimension((int)(width/5), (int)(width/5)));
+
+        setLayout(new BorderLayout());
+    }
+    private void addComponents() {
         eastPanel.setBackground(Color.GRAY);
         eastPanel.add(nextBlockPanel);
         eastPanel.add(scorePanel);
@@ -64,7 +85,7 @@ public class GamePanel extends JPanel {
         DefaultFrame frame = new DefaultFrame();
         GridLayout gl = new GridLayout(1, 1);
         frame.setLayout(gl);
-        frame.add(new GamePanel());
+        frame.add(new GamePanel(1));
         frame.setVisible(true);
     }
 }
