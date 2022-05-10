@@ -3,11 +3,13 @@ package view.frame;
 import java.awt.*;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import view.abstractComponent.frame.DefaultFrame;
+import view.abstractComponent.panel.ImagePanel;
 import view.keyListener.IndexKeyListener;
 
 public class IndexFrame extends DefaultFrame {
@@ -24,6 +26,7 @@ public class IndexFrame extends DefaultFrame {
     private int focusIndex;
     
     private JLabel title;
+    private ImagePanel titlePanel;
     private JButton[] buttons;
 
     public IndexFrame() {
@@ -35,7 +38,11 @@ public class IndexFrame extends DefaultFrame {
         Font font = new Font("Noto sans", Font.BOLD, 30);
         title = new JLabel(titleText);
         title.setFont(font);
+        title.setForeground(Color.WHITE);
         add(title, BorderLayout.NORTH);
+
+        // titlePanel = new ImagePanel("./tetris_image.jpg");
+        // add(titlePanel, BorderLayout.NORTH);
 
         buttons = new JButton[] {
             new JButton(buttonTexts[0]),
