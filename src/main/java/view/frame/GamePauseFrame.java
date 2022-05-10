@@ -2,35 +2,29 @@ package view.frame;
 
 import java.awt.*;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import view.abstractComponent.frame.ButtonMoveFrame;
-import view.abstractComponent.panel.ImagePanel;
-import view.keyListener.IndexKeyListener;
+import view.keyListener.GamePauseListener;
 
-public class IndexFrame extends ButtonMoveFrame {
-
-    private final String titleText = "테트리스";
+public class GamePauseFrame extends ButtonMoveFrame {
+    
+    private final String titleText = "게임 일시정지";
     private final String[] buttonTexts = {
-        "게임 시작",
-        "스코어 보드",
-        "환경 설정",
-        "나가기"
+        "게임 재개",
+        "게임 중지"
     };
 
-    private final static int COUNT = 4;
-    
-    private JLabel title;
-    private ImagePanel titlePanel;
+    private static final int COUNT = 2;
 
-    public IndexFrame() {
+    private JLabel title;
+
+    public GamePauseFrame() {
         super(COUNT);
         
         BorderLayout bl = new BorderLayout();
         setLayout(bl);
-        addKeyListener(new IndexKeyListener(this));
+        addKeyListener(new GamePauseListener(this));
 
         Font font = new Font("Noto sans", Font.BOLD, 30);
         title = new JLabel(titleText);
@@ -38,14 +32,9 @@ public class IndexFrame extends ButtonMoveFrame {
         title.setForeground(Color.WHITE);
         add(title, BorderLayout.NORTH);
 
-        // titlePanel = new ImagePanel("./tetris_image.jpg");
-        // add(titlePanel, BorderLayout.NORTH);
-
         buttons = new JButton[] {
             new JButton(buttonTexts[0]),
             new JButton(buttonTexts[1]),
-            new JButton(buttonTexts[2]),
-            new JButton(buttonTexts[3]),
         };
 
         GridLayout gl = new GridLayout(COUNT, 1);
@@ -65,6 +54,6 @@ public class IndexFrame extends ButtonMoveFrame {
     }
 
     public static void main(String[] args) {
-        new IndexFrame();
+        new GamePauseFrame();
     }
 }

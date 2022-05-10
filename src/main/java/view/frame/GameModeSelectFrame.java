@@ -7,39 +7,34 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import view.abstractComponent.frame.ButtonMoveFrame;
-import view.abstractComponent.panel.ImagePanel;
-import view.keyListener.IndexKeyListener;
+import view.keyListener.GameModeSelectListener;
 
-public class IndexFrame extends ButtonMoveFrame {
-
-    private final String titleText = "테트리스";
+public class GameModeSelectFrame extends ButtonMoveFrame {
+    
+    private final String titleText = "게임 모드";
     private final String[] buttonTexts = {
-        "게임 시작",
-        "스코어 보드",
-        "환경 설정",
+        "일반 모드",
+        "아이템 모드",
+        "듀열 모드",
         "나가기"
     };
 
-    private final static int COUNT = 4;
-    
-    private JLabel title;
-    private ImagePanel titlePanel;
+    private static final int COUNT = 4;
 
-    public IndexFrame() {
+    private JLabel title;
+
+    public GameModeSelectFrame() {
         super(COUNT);
-        
+
         BorderLayout bl = new BorderLayout();
         setLayout(bl);
-        addKeyListener(new IndexKeyListener(this));
+        addKeyListener(new GameModeSelectListener(this));
 
         Font font = new Font("Noto sans", Font.BOLD, 30);
         title = new JLabel(titleText);
         title.setFont(font);
         title.setForeground(Color.WHITE);
         add(title, BorderLayout.NORTH);
-
-        // titlePanel = new ImagePanel("./tetris_image.jpg");
-        // add(titlePanel, BorderLayout.NORTH);
 
         buttons = new JButton[] {
             new JButton(buttonTexts[0]),
@@ -52,7 +47,6 @@ public class IndexFrame extends ButtonMoveFrame {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(gl);
 
-
         for (int i = 0; i < COUNT; i++) {
             decorateButton(buttons[i]);
             buttonPanel.add(buttons[i]);
@@ -64,7 +58,8 @@ public class IndexFrame extends ButtonMoveFrame {
         setVisible(true);
     }
 
+
     public static void main(String[] args) {
-        new IndexFrame();
+        new GameModeSelectFrame();
     }
 }
