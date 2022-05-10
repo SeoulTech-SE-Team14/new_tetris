@@ -19,18 +19,18 @@ public class BoardPanel extends JPanel {
     private final int BOARD_HEIGHT = 20;
 
     private BoardController boardController = BoardController.getInstance();
-
+    private Board board;
     // 패널 크기 조절할 수 있게 매개변수로 받는다.
-    public BoardPanel(int panelWidth, int panelHeight) {
+    public BoardPanel(Board board, int panelWidth, int panelHeight) {
         this.PANEL_WIDTH = panelWidth;
         this.PANEL_HEIGHT = panelHeight;
-
+        this.board = board;
         initBoard();
         initPanel();
     }
 
     private void initBoard() {
-        boardController.init();
+        boardController.init(board);
     }
     private void initPanel() {
         setBackground(Color.BLACK);
@@ -57,7 +57,7 @@ public class BoardPanel extends JPanel {
         g.drawString(shape, x * squareWidth(), (int)((y + 1) * squareWidth() * .74));
     }
     public void drawBoard(Graphics g) {
-        int[][][] tBoard = boardController.getBoard().getBoard();
+        int[][][] tBoard = board.getBoard();
 
         for (int r = 4; r < 24; r++) {
             for (int c = 0; c < 10; c++) {
@@ -74,8 +74,8 @@ public class BoardPanel extends JPanel {
         }
     }
     public void drawNowBlock(Graphics g) {
-        Block nowBlock = boardController.getBoard().getNowBlock();
-        int[][] nowBlockPos = boardController.findCurBlockPosInBoard();
+        Block nowBlock = board.getNowBlock();
+        int[][] nowBlockPos = boardController.findCurBlockPosInBoard(board);
         int lineRemoverIdx = boardController.findLineRemover(nowBlock);
         int count = IntMatrixUtil.countNotZeroValue(nowBlock.getShape());
 

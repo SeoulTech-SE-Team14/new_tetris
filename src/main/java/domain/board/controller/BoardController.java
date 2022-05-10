@@ -28,41 +28,61 @@ public class BoardController {
     private int lineCount;
     private final int PER_LINES = 1;
 
-    public BoardController() {
-        board = new Board();
-    }
+    public BoardController() { }
 
     public boolean isPause() {
         return isPause;
     }
-
     public boolean isItemMode() {
         return isItemMode;
+    }
+    private boolean isEmpty(Board board, int[][] pos) {
+        int[][] matrix = board.getNowBlock().getShape();
+        int xPos = board.getxPos();
+        int yPos = board.getyPos();
+        int[] center = IntMatrixUtil.findNearestCenter(matrix);
+
+        int[][] realPos = findRealPos(pos, xPos, yPos, center, IntMatrixUtil.countNotZeroValue(matrix));
+
+        int[][][] tBoard = board.getBoard();
+
+        try {
+            for (int i = 0; i < IntMatrixUtil.countNotZeroValue(matrix); i++) {
+                int x = realPos[i][0];
+                int y = realPos[i][1];
+
+                if (tBoard[x][y][Board.TYPE] != Board.TYPE_EMPTY) {
+                    return false;
+                }
+            }
+        } catch (IndexOutOfBoundsException e) {
+            return false;
+        }
+
+        return true;
+    }
+    public boolean isDead(Board board) {
+        final int[][] test = board.getBoard()[3];
+        for (int x = 0; x < 10; x++) {
+            if (test[x][Board.TYPE] != Board.TYPE_EMPTY)
+                return true;
+        }
+        return false;
     }
     public boolean getForceQuit() {
         return forceQuit;
     }
-
+    public Board getBoard() {
+        return board;
+    }
     public void setForceQuit() {
         forceQuit = true;
     }
-
     public void setItemMode() {
         isItemMode = true;
     }
 
-
-    private boolean isItem(int[][] shape, int i) {
-        for (int r = 0; r < shape.length; r++) {
-            for (int c = 0; c < shape[r].length; c++) {
-                if (shape[r][c] == i)
-                    return true;
-            }
-        }
-
-        return false;
-    }
-    private void removePos(int[][] pos) {
+    private void removePos(Board board, int[][] pos) {
         int[][][] tBoard = board.getBoard();
         for (int i = 0; i < pos.length; i++) {
             int x = pos[i][0];
@@ -72,10 +92,10 @@ public class BoardController {
             tBoard[x][y][1] = BoardColorMap.getColor(BoardComponent.EMPTY);
         }
     }
-    private void convertBlockToBoard() {
+    private void convertBlockToBoard(Board board) {
         int[][][] tBoard = board.getBoard();
         Block block = board.getNowBlock();
-        int[][] curBlockPosInBoard = findCurBlockPosInBoard();
+        int[][] curBlockPosInBoard = findCurBlockPosInBoard(board);
         int blockColor = BlockController.getInstance().getBlockColor(block);
         int lineRemoverIdx = findLineRemover(block);
         if (block instanceof BombItem) {
@@ -114,11 +134,22 @@ public class BoardController {
                 tBoard[xPos][yPos][Board.COLOR] = blockColor;
             }
         }
-        lineCount += findFullLine().size();
+        lineCount += findFullLine(board).size();
     }
+    private int[][] findRealPos(int[][] matrix, int xPos, int yPos, int[] center, int count) {
 
-    // spawn block method ?
-    private void updateCurBlock() {
+        int[][] ret = new int[count][2];
+
+        int[][] notZeroValue = IntMatrixUtil.findAllNotZeroValuePos(matrix, count);
+
+        for (int i = 0; i < count; i++) {
+            ret[i][0] = xPos + (notZeroValue[i][0] - center[0]);
+            ret[i][1] = yPos + (notZeroValue[i][1] - center[1]);
+        }
+
+        return ret;
+    }
+    private void updateCurBlock(Board board) {
         board.setNowBlock(board.getPrevBlock());
         board.setyPos(5);
         board.setxPos(5 - IntMatrixUtil.lengthCenterToBottom(board.getNowBlock().getShape()));
@@ -131,7 +162,20 @@ public class BoardController {
             board.setPrevBlock(BlockController.getInstance().getRandomItem());
         }
     }
-    public void init() {
+    private void moveBoardLineDown(int[][][] board, int deletedRow) {
+        for (int i = deletedRow; i > 0; i--) {
+            board[i] = board[i - 1];
+        }
+
+        board[0] = new int[10][2];
+        for (int i = 0; i < 10; i++) {
+            board[0][i][Board.TYPE] = Board.TYPE_EMPTY;
+            board[0][i][Board.COLOR] = BoardColorMap.getColor(BoardComponent.EMPTY);
+        }
+    }
+
+    public void init(Board board) {
+        this.board = board;
         int[][][] tBoard = board.getBoard();
 
         for (int r = 0; r < 24; r++) {
@@ -148,29 +192,17 @@ public class BoardController {
         lineCount = 0;
 
         board.setPrevBlock(BlockController.getInstance().getRandomBlock());
-        updateCurBlock();
+        updateCurBlock(board);
     }
 
-    public Board getBoard() {
-        return board;
-    }
-
-    public int[][] findCurBlockPosInBoard() {
+    public int[][] findCurBlockPosInBoard(Board board) {
         Block block = board.getNowBlock();
         int[][] shape = block.getShape();
         int xPos = board.getxPos();
         int yPos = board.getyPos();
         int[] center = IntMatrixUtil.findNearestCenter(shape);
         int count = IntMatrixUtil.countNotZeroValue(shape);
-
-        int[][] ret = new int[count][2];
-        int[][] notZeroValue = IntMatrixUtil.findAllNotZeroValuePos(shape, count);
-
-        for (int i = 0; i < count; i++) {
-            ret[i][0] = xPos + (notZeroValue[i][0] - center[0]);
-            ret[i][1] = yPos + (notZeroValue[i][1] - center[1]);
-        }
-        return ret;
+        return findRealPos(shape, xPos, yPos, center, count);
     }
     // i가 뭐지
     public int findLineRemover(Block block) {
@@ -190,7 +222,7 @@ public class BoardController {
         return -1;
     }
     // 지워지는 라인 Column 모두 리턴
-    public List<Integer> findFullLine() {
+    public List<Integer> findFullLine(Board board) {
         List<Integer> lines = new ArrayList<>();
         int[][][] currentBoard = board.getBoard();
         for(int row = 0; row < 24; row++) {
@@ -213,27 +245,16 @@ public class BoardController {
         return lines;
     }
 
-    public void deleteFullLine(List<Integer> toDelete) {
+    public void deleteFullLine(Board board, List<Integer> toDelete) {
         for (Integer i : toDelete) {
             moveBoardLineDown(board.getBoard(), i);
         }
     }
-    private void moveBoardLineDown(int[][][] board, int deletedRow) {
-        for (int i = deletedRow; i > 0; i--) {
-            board[i] = board[i - 1];
-        }
-
-        board[0] = new int[10][2];
-        for (int i = 0; i < 10; i++) {
-            board[0][i][Board.TYPE] = Board.TYPE_EMPTY;
-            board[0][i][Board.COLOR] = BoardColorMap.getColor(BoardComponent.EMPTY);
-        }
-    }
-    public void moveLeft() {
+    public void moveLeft(Board board) {
         Block block = board.getNowBlock();
         if(block.isMovable()) {
             try {
-                int[][] curBlockPosInBoard = findCurBlockPosInBoard();
+                int[][] curBlockPosInBoard = findCurBlockPosInBoard(board);
                 int[][] blockShape = block.getShape();
                 if (block instanceof DrillItem) {
                     for (int i = 0; i < IntMatrixUtil.countNotZeroValue(blockShape); i++) {
@@ -242,7 +263,7 @@ public class BoardController {
                             continue;
                         }
                     }
-                    removePos(curBlockPosInBoard);
+                    removePos(board, curBlockPosInBoard);
                 }
                 else {
                     for (int i = 0; i < IntMatrixUtil.countNotZeroValue(blockShape); i++) {
@@ -257,18 +278,18 @@ public class BoardController {
             }
         }
     }
-    public void moveRight() {
+    public void moveRight(Board board) {
         Block block = board.getNowBlock();
         if (block.isMovable()) {
             try {
-                int[][] curBlockPosInBoard = findCurBlockPosInBoard();
+                int[][] curBlockPosInBoard = findCurBlockPosInBoard(board);
                 if (block instanceof DrillItem) {
                     for (int i = 0; i < IntMatrixUtil.countNotZeroValue(block.getShape()); i++) {
                         if (board.getBoard()[curBlockPosInBoard[i][0]][curBlockPosInBoard[i][1] + 1][Board.TYPE] != Board.TYPE_EMPTY) {
                             continue;
                         }
                     }
-                    removePos(curBlockPosInBoard);
+                    removePos(board, curBlockPosInBoard);
                 }
                 else {
                     for (int i = 0; i < IntMatrixUtil.countNotZeroValue(block.getShape()); i++) {
@@ -283,10 +304,10 @@ public class BoardController {
             }
         }
     }
-    public boolean moveDown() {
+    public boolean moveDown(Board board) {
         Block block = board.getNowBlock();
         int[][] blockShape = block.getShape();
-        int[][] curBlockPosInBoard = findCurBlockPosInBoard();
+        int[][] curBlockPosInBoard = findCurBlockPosInBoard(board);
 
         try {
             if (block instanceof WeightItem) {
@@ -295,7 +316,7 @@ public class BoardController {
                         board.getNowBlock().setMovable(false);
                     }
                 }
-                removePos(curBlockPosInBoard);
+                removePos(board, curBlockPosInBoard);
             }
             else if (block instanceof DrillItem) {
                 for (int i = 0; i < IntMatrixUtil.countNotZeroValue(blockShape); i++) {
@@ -303,13 +324,13 @@ public class BoardController {
                         continue;
                     }
                 }
-                removePos(curBlockPosInBoard);
+                removePos(board, curBlockPosInBoard);
             }
             else {
                 for (int i = 0; i < IntMatrixUtil.countNotZeroValue(blockShape); i++) {
                     if (board.getBoard()[curBlockPosInBoard[i][0] + 1][curBlockPosInBoard[i][1]][Board.TYPE] != Board.TYPE_EMPTY) {
-                        convertBlockToBoard();
-                        updateCurBlock();
+                        convertBlockToBoard(board);
+                        updateCurBlock(board);
                         return true;
                     }
                 }
@@ -319,33 +340,53 @@ public class BoardController {
             //scoreService.updateScore(0, GameFrame.periodInterval);
         } catch (IndexOutOfBoundsException e) {
             if (block instanceof WeightItem) {
-                removePos(curBlockPosInBoard);
-                updateCurBlock();
+                removePos(board, curBlockPosInBoard);
+                updateCurBlock(board);
             }
             else if (block instanceof DrillItem) {
-                removePos(curBlockPosInBoard);
-                updateCurBlock();
+                removePos(board, curBlockPosInBoard);
+                updateCurBlock(board);
             }
             else {
-                convertBlockToBoard();
-                updateCurBlock();
+                convertBlockToBoard(board);
+                updateCurBlock(board);
             }
             return true;
         }
         return false;
     }
-    public boolean moveDownAtOnce() {
-
-        while (!moveDown()) {}
-
+    public boolean moveDownAtOnce(Board board) {
+        while (!moveDown(board)) {}
         return true;
     }
-    public boolean isDead() {
-        final int[][] test = board.getBoard()[3];
-        for (int x = 0; x < 10; x++) {
-            if (test[x][Board.TYPE] != Board.TYPE_EMPTY)
-                return true;
+    public void rotate(Board board) {
+        if (board.getNowBlock().isRotatable()) {
+            int[][] beforeShape = board.getNowBlock().getShape();
+            int[][] afterShape = IntMatrixUtil.rotateClockwise(board.getNowBlock().getShape());
+
+            int prevXPos = board.getxPos();
+            int prevYPos = board.getyPos();
+
+            board.getNowBlock().setShape(afterShape);
+            for (int xVal = 0; xVal >= -1; xVal--) {
+                for (int yVal = 0; yVal <= 2; yVal++) {
+                    board.setxPos(prevXPos + xVal); board.setyPos(prevYPos + yVal);
+                    if (isEmpty(board, afterShape)) {
+                        board.getNowBlock().setShape(afterShape);
+                        return;
+                    }
+
+                    board.setyPos(prevYPos - yVal);
+                    if (isEmpty(board, afterShape)) {
+                        board.getNowBlock().setShape(afterShape);
+                        return;
+                    }
+                }
+            }
+
+            board.setxPos(prevXPos); board.setyPos(prevYPos);
+            board.getNowBlock().setShape(beforeShape);
         }
-        return false;
     }
+
 }

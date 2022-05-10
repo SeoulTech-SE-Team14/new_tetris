@@ -1,6 +1,7 @@
 package view.abstractComponent.panel.game;
 
 import domain.board.controller.BoardController;
+import domain.board.entity.Board;
 import domain.config.controller.WindowSizeConfigController;
 import domain.config.entity.WindowSizeConfig;
 import domain.score.controller.ScoreController;
@@ -35,7 +36,7 @@ public class GamePanel extends JPanel {
 
         setLayout(new BorderLayout());
 
-        boardPanel = new BoardPanel(300, 300);
+        boardPanel = new BoardPanel(board, 300, 300);
         nextBlockPanel = new NextBlockPanel();
         scorePanel = new ScorePanel();
 

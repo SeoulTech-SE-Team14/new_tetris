@@ -17,8 +17,9 @@ import java.awt.*;
 
 public class NextBlockPanel extends JPanel {
     private LineBorder lineBorder = new LineBorder(Color.WHITE);
-
+    private Board board;
     public NextBlockPanel() {
+        board = BoardController.getInstance().getBoard();
         setBackground(new Color(BoardColorMap.getColor(BoardComponent.EMPTY)));
         setPreferredSize(new Dimension(300, 300));
         setBorder(lineBorder);
@@ -42,7 +43,6 @@ public class NextBlockPanel extends JPanel {
         g.drawString(shape, x * squareWidth(), (int)((y + 1) * squareWidth() * .74));
     }
     public void drawNextBlock(Graphics g) {
-        Board board = BoardController.getInstance().getBoard();
         int[][] nextBlockPos = IntMatrixUtil.findAllNotZeroValuePos(board.getPrevBlock().getShape(), IntMatrixUtil.countNotZeroValue(board.getPrevBlock().getShape()));
         int[] center = IntMatrixUtil.findNearestCenter(board.getPrevBlock().getShape());
 
