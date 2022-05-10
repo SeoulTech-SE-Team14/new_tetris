@@ -21,12 +21,16 @@ public class BoardPanel extends JPanel {
     private BoardController boardController = BoardController.getInstance();
     private Board board;
     // 패널 크기 조절할 수 있게 매개변수로 받는다.
-    public BoardPanel(Board board, int panelWidth, int panelHeight) {
+    public BoardPanel(int panelWidth, int panelHeight) {
         this.PANEL_WIDTH = panelWidth;
         this.PANEL_HEIGHT = panelHeight;
-        this.board = board;
+        board = new Board();
         initBoard();
         initPanel();
+    }
+
+    public Board getBoard() {
+        return board;
     }
 
     private void initBoard() {

@@ -1,20 +1,16 @@
 package view.abstractComponent.panel.game;
 
 import domain.board.controller.BoardController;
-import domain.board.entity.Board;
 import domain.config.controller.WindowSizeConfigController;
 import domain.config.entity.WindowSizeConfig;
-import domain.score.controller.ScoreController;
-import domain.score.entity.Score;
 import view.abstractComponent.frame.DefaultFrame;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class GamePanel extends JPanel {
     WindowSizeConfig windowSize = WindowSizeConfigController.getInstance().getCurrentConfig();
+
     private BoardPanel boardPanel;
     private NextBlockPanel nextBlockPanel;
     private ScorePanel scorePanel;
@@ -24,7 +20,7 @@ public class GamePanel extends JPanel {
     private JPanel westPanel;
 
 
-    public GamePanel(int width  , int height, int mode) {//multiGameFrame
+    public GamePanel(int width, int height, int mode) {//multiGameFrame
         super();
         init();
         set(width, height);
@@ -37,14 +33,12 @@ public class GamePanel extends JPanel {
         set();
         addComponents();
         BoardController.getInstance().setItemMode();
-        //ScoreController.getInstance().setMode(score, mode);
+        //ScoreController.getInstance().setMode(mode);
     }
-    private void addComponents() {
-        WindowSizeConfig windowSize = WindowSizeConfigController.getInstance().getCurrentConfig();
 
     private void init(){
         boardPanel = new BoardPanel(300, 300);
-        nextBlockPanel = new NextBlockPanel();
+        nextBlockPanel = new NextBlockPanel(boardPanel.getBoard().getPrevBlock());
         scorePanel = new ScorePanel();
         previewPanel = new BoardPanel(300, 300);
 
@@ -62,17 +56,17 @@ public class GamePanel extends JPanel {
 
         setLayout(new BorderLayout());
     }
-        private void set(int width, int height){//MultiGame
+    private void set(int width, int height){//MultiGame
 
-            westPanel.setBackground(Color.GRAY);
-            westPanel.setPreferredSize(new Dimension(0, height));
-            eastPanel.setPreferredSize(new Dimension((int)(width*0.3), height/2));
-            boardPanel.setPreferredSize(new Dimension((int)(width*0.6), (int)(height*0.9)));
-            nextBlockPanel.setPreferredSize(new Dimension((int)(width/5), (int)(width/5)));
-            scorePanel.setPreferredSize(new Dimension((int)(width/5), (int)(width/5)));
+        westPanel.setBackground(Color.GRAY);
+        westPanel.setPreferredSize(new Dimension(0, height));
+        eastPanel.setPreferredSize(new Dimension((int)(width*0.3), height/2));
+        boardPanel.setPreferredSize(new Dimension((int)(width*0.6), (int)(height*0.9)));
+        nextBlockPanel.setPreferredSize(new Dimension((int)(width/5), (int)(width/5)));
+        scorePanel.setPreferredSize(new Dimension((int)(width/5), (int)(width/5)));
 
-            setLayout(new BorderLayout());
-        }
+        setLayout(new BorderLayout());
+    }
     private void addComponents() {
         eastPanel.setBackground(Color.GRAY);
         eastPanel.add(nextBlockPanel);
