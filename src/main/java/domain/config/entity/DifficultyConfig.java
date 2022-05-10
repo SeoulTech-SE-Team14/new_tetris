@@ -83,4 +83,8 @@ public class DifficultyConfig {
     public double[] getPreviousProbability() {
         return previousProbability;
     }
+
+    public int getSumOfFitness() {
+        return sumOfFitness;
+    }
 }
