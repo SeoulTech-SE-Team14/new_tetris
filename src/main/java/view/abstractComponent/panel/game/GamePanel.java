@@ -3,6 +3,8 @@ package view.abstractComponent.panel.game;
 import domain.board.controller.BoardController;
 import domain.config.controller.WindowSizeConfigController;
 import domain.config.entity.WindowSizeConfig;
+import domain.score.controller.ScoreController;
+import domain.score.entity.Score;
 import view.abstractComponent.frame.DefaultFrame;
 
 import javax.swing.*;
@@ -21,16 +23,18 @@ public class GamePanel extends JPanel {
     private JPanel eastPanel;
     private JPanel westPanel;
 
+    private Score score;
+
     public GamePanel() {
         super();
         addComponents();
     }
 
-    public GamePanel(int mode) {
+    public GamePanel(String mode) {
         super();
         addComponents();
         BoardController.getInstance().setItemMode();
-        //ScoreController.getInstance().setMode(mode);
+        ScoreController.getInstance().setMode(score, mode);
     }
     private void addComponents() {
         WindowSizeConfig windowSize = WindowSizeConfigController.getInstance().getCurrentConfig();
