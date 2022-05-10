@@ -9,12 +9,8 @@ import view.abstractComponent.frame.DefaultFrame;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class GamePanel extends JPanel {
-    private List<Integer> toDelete = new ArrayList<>();
-
     private BoardPanel boardPanel;
     private NextBlockPanel nextBlockPanel;
     private ScorePanel scorePanel;
@@ -23,14 +19,12 @@ public class GamePanel extends JPanel {
     private JPanel eastPanel;
     private JPanel westPanel;
 
-    private Score score;
-
     public GamePanel() {
         super();
         addComponents();
     }
 
-    public GamePanel(String mode) {
+    public GamePanel(Score score, String mode) {
         super();
         addComponents();
         BoardController.getInstance().setItemMode();
