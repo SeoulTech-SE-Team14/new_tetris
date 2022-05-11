@@ -1,6 +1,7 @@
 package view.abstractComponent.panel.game;
 
 import javax.swing.JPanel;
+import java.awt.*;
 
 import domain.block.controller.BlockController;
 import domain.block.entity.Block;
@@ -10,7 +11,7 @@ import domain.board.controller.BoardController;
 import domain.board.entity.Board;
 import global.matrix.IntMatrixUtil;
 
-import java.awt.*;
+import java.util.List;
 
 public class BoardPanel extends JPanel {
     private final int PANEL_WIDTH;
@@ -106,26 +107,26 @@ public class BoardPanel extends JPanel {
         }
     }
 
-//    public void drawDeletedLine(Graphics g) {
-//        if (GameFrame.toDelete != null) {
-//            for (int y : GameFrame.toDelete) {
-//                for (int x = 0; x < 10; x++) {
-//                    int xPos = x * squareWidth();
-//                    int yPos = (y - 4) * squareHeight();
-//
-//                    Color color = new Color(board.getBoard()[y][x][Board.COLOR] / 2);
-//
-//                    drawSquare(g, xPos, yPos, color);
-//                }
-//            }
-//        }
-//    }
+    public void drawDeletedLine(Graphics g) {
+        List<Integer> toDelete = BoardController.getInstance().findFullLine(board);
+        if (!toDelete.isEmpty()) {
+            for (int y : toDelete) {
+                for (int x = 0; x < 10; x++) {
+                    int xPos = x * squareWidth();
+                    int yPos = (y - 4) * squareHeight();
+                    Color color = new Color(board.getBoard()[y][x][Board.COLOR] / 2);
+                    drawSquare(g, xPos, yPos, color);
+                }
+            }
+        }
+    }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
         drawBoard(g);
+        drawDeletedLine(g);
         drawNowBlock(g);
     }
 }

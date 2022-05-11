@@ -27,6 +27,10 @@ public class GamePanel extends JPanel {
         addComponents();
     }
 
+    public BoardPanel getBoardPanel() {
+        return boardPanel;
+    }
+
     public GamePanel(int mode) {//singleGameFrame
         super();
         init();
@@ -76,6 +80,7 @@ public class GamePanel extends JPanel {
         add(boardPanel, BorderLayout.CENTER);
         add(eastPanel, BorderLayout.EAST);
     }
+
 
     public static void main(String[] args) {
         DefaultFrame frame = new DefaultFrame();

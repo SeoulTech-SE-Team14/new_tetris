@@ -159,7 +159,7 @@ public class BoardController {
             lineCount %= PER_LINES;
         }
         else {
-            board.setPrevBlock(BlockController.getInstance().getRandomItem());
+            board.setPrevBlock(BlockController.getInstance().getRandomBlock());
         }
     }
     private void moveBoardLineDown(int[][][] board, int deletedRow) {
