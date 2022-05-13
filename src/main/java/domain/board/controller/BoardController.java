@@ -153,7 +153,6 @@ public class BoardController {
         board.setNowBlock(board.getPrevBlock());
         board.setyPos(5);
         board.setxPos(5 - IntMatrixUtil.lengthCenterToBottom(board.getNowBlock().getShape()));
-
         if (isItemMode && lineCount >= PER_LINES) {
             board.setPrevBlock(BlockController.getInstance().getRandomItem());
             lineCount %= PER_LINES;

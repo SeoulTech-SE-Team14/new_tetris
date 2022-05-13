@@ -4,22 +4,25 @@ import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
 import domain.block.controller.BlockController;
-import domain.block.entity.Block;
+import domain.board.controller.BoardController;
+
+import domain.board.entity.Board;
 import domain.block.entity.itemBlock.BombItem;
 import domain.block.entity.itemBlock.DrillItem;
+
 import domain.board.constant.BoardComponent;
 import domain.board.constant.map.BoardColorMap;
-import domain.board.controller.BoardController;
-import domain.board.entity.Board;
+
 import global.matrix.IntMatrixUtil;
 
 import java.awt.*;
 
 public class NextBlockPanel extends JPanel {
     private LineBorder lineBorder = new LineBorder(Color.WHITE);
-    Block previewBlock;
-    public NextBlockPanel(Block previewBlock) {
-        this.previewBlock = previewBlock;
+    private Board board;
+
+    public NextBlockPanel(Board board) {
+        this.board = board;
         setBackground(new Color(BoardColorMap.getColor(BoardComponent.EMPTY)));
         setPreferredSize(new Dimension(300, 300));
         setBorder(lineBorder);
@@ -32,10 +35,6 @@ public class NextBlockPanel extends JPanel {
     }
 
     // draw method
-    private void drawSquare(Graphics g, int x, int y, Color color) {
-        g.setColor(color);
-        g.fillRect(x + 1, y + 1, squareWidth() - 2, squareHeight() - 2);
-    }
     private void drawText(Graphics g, int x, int y, Color color, String shape) {
         int fontSize = (int)(squareWidth());
         g.setColor(color);
@@ -43,25 +42,25 @@ public class NextBlockPanel extends JPanel {
         g.drawString(shape, x * squareWidth(), (int)((y + 1) * squareWidth() * .74));
     }
     public void drawNextBlock(Graphics g) {
-        int[][] nextBlockPos = IntMatrixUtil.findAllNotZeroValuePos(previewBlock.getShape(), IntMatrixUtil.countNotZeroValue(previewBlock.getShape()));
-        int[] center = IntMatrixUtil.findNearestCenter(previewBlock.getShape());
+        int[][] nextBlockPos = IntMatrixUtil.findAllNotZeroValuePos(board.getPrevBlock().getShape(), IntMatrixUtil.countNotZeroValue(board.getPrevBlock().getShape()));
+        int[] center = IntMatrixUtil.findNearestCenter(board.getPrevBlock().getShape());
 
-        for (int i = 0; i < IntMatrixUtil.countNotZeroValue(previewBlock.getShape()); i++) {
+        for (int i = 0; i < IntMatrixUtil.countNotZeroValue(board.getPrevBlock().getShape()); i++) {
             nextBlockPos[i][0] = 1 + (nextBlockPos[i][0] - center[0]);
             nextBlockPos[i][1] = 1 + (nextBlockPos[i][1] - center[1]);
         }
 
-        for (int i = 0; i < IntMatrixUtil.countNotZeroValue(previewBlock.getShape()); i++) {
+        for (int i = 0; i < IntMatrixUtil.countNotZeroValue(board.getPrevBlock().getShape()); i++) {
             int x = nextBlockPos[i][1];
             int y = nextBlockPos[i][0];
 
-            Color color = new Color(BlockController.getInstance().getBlockColor(previewBlock));
+            Color color = new Color(BlockController.getInstance().getBlockColor(board.getPrevBlock()));
             String shape;
-            int lineRemoverIdx = BoardController.getInstance().findLineRemover(previewBlock);
-            if (previewBlock instanceof BombItem) {
+            int lineRemoverIdx = BoardController.getInstance().findLineRemover(board.getPrevBlock());
+            if (board.getPrevBlock() instanceof BombItem) {
                 shape = "B";
             }
-            else if (previewBlock instanceof DrillItem) {
+            else if (board.getPrevBlock() instanceof DrillItem) {
                 shape = "D";
             }
             else if (i == lineRemoverIdx) {
@@ -75,8 +74,12 @@ public class NextBlockPanel extends JPanel {
     }
 
     @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
+    public void paint(Graphics g) {
+        super.paint(g);
         drawNextBlock(g);
+    }
+    @Override
+    public void repaint() {
+        super.repaint();
     }
 }

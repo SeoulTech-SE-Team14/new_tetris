@@ -1,8 +1,9 @@
 package view.abstractComponent.panel.game;
 
-import domain.board.controller.BoardController;
 import domain.config.controller.WindowSizeConfigController;
+
 import domain.config.entity.WindowSizeConfig;
+
 import view.abstractComponent.frame.DefaultFrame;
 
 import javax.swing.*;
@@ -20,7 +21,13 @@ public class GamePanel extends JPanel {
     private JPanel westPanel;
 
 
-    public GamePanel(int width, int height, int mode) {//multiGameFrame
+    public GamePanel() {//singleGameFrame
+        super();
+        init();
+        set();
+        addComponents();
+    }
+    public GamePanel(int width, int height) {//multiGameFrame
         super();
         init();
         set(width, height);
@@ -31,18 +38,10 @@ public class GamePanel extends JPanel {
         return boardPanel;
     }
 
-    public GamePanel(int mode) {//singleGameFrame
-        super();
-        init();
-        set();
-        addComponents();
-        BoardController.getInstance().setItemMode();
-        //ScoreController.getInstance().setMode(mode);
-    }
 
     private void init(){
         boardPanel = new BoardPanel(300, 300);
-        nextBlockPanel = new NextBlockPanel(boardPanel.getBoard().getPrevBlock());
+        nextBlockPanel = new NextBlockPanel(boardPanel.getBoard());
         scorePanel = new ScorePanel();
         previewPanel = new BoardPanel(300, 300);
 
@@ -50,7 +49,6 @@ public class GamePanel extends JPanel {
         westPanel = new JPanel();
     }
     private void set(){
-
         westPanel.setBackground(Color.GRAY);
         westPanel.setPreferredSize(new Dimension((int)(windowSize.getWidth()/4), windowSize.getHeight()));
         eastPanel.setPreferredSize(new Dimension((int)(windowSize.getWidth()/4), windowSize.getHeight()/2));
@@ -61,7 +59,6 @@ public class GamePanel extends JPanel {
         setLayout(new BorderLayout());
     }
     private void set(int width, int height){//MultiGame
-
         westPanel.setBackground(Color.GRAY);
         westPanel.setPreferredSize(new Dimension(0, height));
         eastPanel.setPreferredSize(new Dimension((int)(width*0.3), height/2));
@@ -81,12 +78,21 @@ public class GamePanel extends JPanel {
         add(eastPanel, BorderLayout.EAST);
     }
 
-
     public static void main(String[] args) {
         DefaultFrame frame = new DefaultFrame();
         GridLayout gl = new GridLayout(1, 1);
         frame.setLayout(gl);
-        frame.add(new GamePanel(1));
+        frame.add(new GamePanel());
         frame.setVisible(true);
+    }
+
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+    }
+
+    @Override
+    public void repaint() {
+        super.repaint();
     }
 }

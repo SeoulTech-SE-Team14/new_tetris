@@ -13,7 +13,6 @@ public class MultiGameFrame extends DefaultFrame {
     
     private GamePanel playerOneGamePanel;
     private GamePanel playerTwoGamePanel;
-    private GameKeyListener gameKeyListener;
     private GridLayout gridLayout;
 
     public MultiGameFrame(){
@@ -23,9 +22,8 @@ public class MultiGameFrame extends DefaultFrame {
     }
 
     public void init(){
-        playerOneGamePanel = new GamePanel(windowSize.getWidth()/2, windowSize.getHeight(), 1);
-        playerTwoGamePanel = new GamePanel(windowSize.getWidth()/2, windowSize.getHeight(), 1);
-        gameKeyListener = new GameKeyListener();
+        playerOneGamePanel = new GamePanel(windowSize.getWidth()/2, windowSize.getHeight());
+        playerTwoGamePanel = new GamePanel(windowSize.getWidth()/2, windowSize.getHeight());
         gridLayout = new GridLayout(1, 0);
     }
     public void set(){
@@ -36,7 +34,7 @@ public class MultiGameFrame extends DefaultFrame {
     public void add(){
         add(playerOneGamePanel, BorderLayout.WEST);
         add(playerTwoGamePanel, BorderLayout.EAST);
-        addKeyListener(gameKeyListener);
+        addKeyListener(new GameKeyListener(playerOneGamePanel, playerTwoGamePanel));
     }
     public static void main(String[] args){
         new MultiGameFrame();

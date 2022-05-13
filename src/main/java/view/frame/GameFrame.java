@@ -2,17 +2,15 @@ package view.frame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyListener;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
 import domain.board.controller.BoardController;
-import domain.board.entity.Board;
 import domain.config.controller.DifficultyConfigController;
 import domain.config.controller.WindowSizeConfigController;
+
 import domain.config.entity.WindowSizeConfig;
-import domain.score.controller.ScoreController;
+
 import view.abstractComponent.frame.DefaultFrame;
 import view.abstractComponent.panel.game.GamePanel;
 import view.keyListener.GameKeyListener;
@@ -32,18 +30,17 @@ public class GameFrame extends DefaultFrame {
     private static Timer updateTimer;
     private Timer redrawTimer;
 
-    public GameFrame(){
+    public GameFrame(){ }
+    public GameFrame(int mode) {
         init();
         add();
         set();
-        run(DifficultyConfigController.getInstance().getCurrentConfig().getDifficulty());
+        run(DifficultyConfigController.getInstance().getCurrentConfig().getDifficulty(), mode);
     }
-
     public void init(){
-        gamePanel = new GamePanel(1);
-        gameKeyListener = new GameKeyListener(this, gamePanel);
+        gamePanel = new GamePanel();
+        addKeyListener(new GameKeyListener(gamePanel));
     }
-
     public void set(){
         setVisible(true);
         setFocusable(true);
@@ -51,11 +48,11 @@ public class GameFrame extends DefaultFrame {
     public void add(){
         add(gamePanel);
     }
-    public void run(String difficulty) {
-        start(difficulty);
+    public void run(String difficulty, int mode) {
+        start(difficulty, mode);
     }
-    public void start(String difficulty) {
-        beforeStart(difficulty);
+    public void start(String difficulty, int mode) {
+        beforeStart(difficulty, mode);
 
         updateTimer = new Timer(periodInterval, new UpdateCycle());
         updateTimer.start();
@@ -63,7 +60,7 @@ public class GameFrame extends DefaultFrame {
         redrawTimer = new Timer(25, new RepaintCycle());
         redrawTimer.start();
     }
-    private void beforeStart(String difficulty) {
+    private void beforeStart(String difficulty, int mode) {
         if (Objects.equals(difficulty, "Easy")) {
             periodInterval = 1500;
             rateOfDecrease = 2;
@@ -77,15 +74,10 @@ public class GameFrame extends DefaultFrame {
             rateOfDecrease = 7;
         }
 
-        if (BoardController.getInstance().isItemMode()) {
-            BoardController.getInstance().init(gamePanel.getBoardPanel().getBoard());
+        if (mode == 1) {
             BoardController.getInstance().setItemMode();
         }
-        else {
-            BoardController.getInstance().init(gamePanel.getBoardPanel().getBoard());
-        }
     }
-
 
     private class UpdateCycle implements ActionListener {
 
@@ -121,8 +113,6 @@ public class GameFrame extends DefaultFrame {
             repaint();
         }
     }
-
-    public static List<Integer> toDelete;
 
     private void update() {
 
@@ -162,8 +152,11 @@ public class GameFrame extends DefaultFrame {
         }
         updateTimer.setDelay(periodInterval);
     }
+    @Override
+    public void repaint() {
+        super.repaint();
+    }
     public static void main(String[] args){
-
-        new GameFrame();
+        new GameFrame(1);
     }
 }
