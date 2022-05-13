@@ -2,16 +2,15 @@ package view.keyListener;
 
 import java.awt.event.*;
 
-import view.frame.ConfigFrame;
+import view.frame.GameFrame;
 import view.frame.GameModeSelectFrame;
 import view.frame.IndexFrame;
-import view.frame.ScoreBoardFrame;
 
-public class IndexKeyListener extends KeyAdapter {
+public class GameModeSelectListener extends KeyAdapter {
     
-    private IndexFrame frame;
+    private GameModeSelectFrame frame;
 
-    public IndexKeyListener(IndexFrame frame) {
+    public GameModeSelectListener(GameModeSelectFrame frame) {
         this.frame = frame;
     }
 
@@ -29,10 +28,10 @@ public class IndexKeyListener extends KeyAdapter {
     public void setConfig() {
 
         switch (frame.getFocusIndex()) {
-            case 0: frame.dispose(); new GameModeSelectFrame(); break;
-            case 1: frame.dispose(); new ScoreBoardFrame(); break;
-            case 2: frame.dispose(); new ConfigFrame(); break;
-            case 3: frame.dispose(); break;
+            case 0: frame.dispose(); new GameFrame(); break;
+            case 1: frame.dispose(); new GameFrame(); break;
+            case 2: frame.dispose(); new GameFrame(); break;
+            case 3: frame.dispose(); new IndexFrame(); break;
         }
     }
 }
