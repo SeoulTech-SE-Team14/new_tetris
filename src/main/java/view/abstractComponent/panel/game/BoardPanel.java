@@ -122,14 +122,10 @@ public class BoardPanel extends JPanel {
     }
 
     @Override
-    public void paint(Graphics g) {
-        super.paint(g);
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
         drawBoard(g);
         drawNowBlock(g);
         drawDeletedLine(g);
-    }
-    @Override
-    public void repaint() {
-        super.repaint();
     }
 }

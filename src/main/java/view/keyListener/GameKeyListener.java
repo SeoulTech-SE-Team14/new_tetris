@@ -32,10 +32,6 @@ public class GameKeyListener implements KeyListener {
 
         if(keyCode == KeyConfigController.getInstance().getCurrentConfig().get(KeyType.P1_BLOCK_MOVE_DOWN)) {
             BoardController.getInstance().moveDown(player1.getBoardPanel().getBoard());
-            List<Integer> delete = BoardController.getInstance().findFullLine(player1.getBoardPanel().getBoard());
-            if(!delete.isEmpty()) {
-                BoardController.getInstance().deleteFullLine(player1.getBoardPanel().getBoard(), delete);
-            }
         } else if(keyCode == KeyConfigController.getInstance().getCurrentConfig().get(KeyType.P1_BLOCK_MOVE_LEFT)) {
             BoardController.getInstance().moveLeft(player1.getBoardPanel().getBoard());
         } else if(keyCode == KeyConfigController.getInstance().getCurrentConfig().get(KeyType.P1_BLOCK_MOVE_RIGHT)) {
@@ -44,18 +40,10 @@ public class GameKeyListener implements KeyListener {
             BoardController.getInstance().rotate(player1.getBoardPanel().getBoard());
         } else if(keyCode == KeyConfigController.getInstance().getCurrentConfig().get(KeyType.P1_BLOCK_MOVE_DOWN_AT_ONCE)) {
             BoardController.getInstance().moveDownAtOnce(player1.getBoardPanel().getBoard());
-            List<Integer> delete = BoardController.getInstance().findFullLine(player1.getBoardPanel().getBoard());
-            if(!delete.isEmpty()) {
-                BoardController.getInstance().deleteFullLine(player1.getBoardPanel().getBoard(), delete);
-            }
         }
 
         if(keyCode == KeyConfigController.getInstance().getCurrentConfig().get(KeyType.P2_BLOCK_MOVE_DOWN)) {
             BoardController.getInstance().moveDown(player2.getBoardPanel().getBoard());
-            List<Integer> delete = BoardController.getInstance().findFullLine(player2.getBoardPanel().getBoard());
-            if(!delete.isEmpty()) {
-                BoardController.getInstance().deleteFullLine(player2.getBoardPanel().getBoard(), delete);
-            }
         } else if(keyCode == KeyConfigController.getInstance().getCurrentConfig().get(KeyType.P2_BLOCK_MOVE_LEFT)) {
             BoardController.getInstance().moveLeft(player2.getBoardPanel().getBoard());
         } else if(keyCode == KeyConfigController.getInstance().getCurrentConfig().get(KeyType.P2_BLOCK_MOVE_RIGHT)) {
@@ -64,10 +52,6 @@ public class GameKeyListener implements KeyListener {
             BoardController.getInstance().rotate(player2.getBoardPanel().getBoard());
         } else if(keyCode == KeyConfigController.getInstance().getCurrentConfig().get(KeyType.P2_BLOCK_MOVE_DOWN_AT_ONCE)) {
             BoardController.getInstance().moveDownAtOnce(player2.getBoardPanel().getBoard());
-            List<Integer> delete = BoardController.getInstance().findFullLine(player2.getBoardPanel().getBoard());
-            if(!delete.isEmpty()) {
-                BoardController.getInstance().deleteFullLine(player2.getBoardPanel().getBoard(), delete);
-            }
         }
     }
 

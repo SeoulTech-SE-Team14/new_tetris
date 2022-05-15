@@ -74,12 +74,8 @@ public class NextBlockPanel extends JPanel {
     }
 
     @Override
-    public void paint(Graphics g) {
-        super.paint(g);
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
         drawNextBlock(g);
-    }
-    @Override
-    public void repaint() {
-        super.repaint();
     }
 }

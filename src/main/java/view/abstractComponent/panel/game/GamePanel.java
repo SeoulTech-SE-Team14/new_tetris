@@ -85,14 +85,4 @@ public class GamePanel extends JPanel {
         frame.add(new GamePanel());
         frame.setVisible(true);
     }
-
-    @Override
-    public void paint(Graphics g) {
-        super.paint(g);
-    }
-
-    @Override
-    public void repaint() {
-        super.repaint();
-    }
 }
