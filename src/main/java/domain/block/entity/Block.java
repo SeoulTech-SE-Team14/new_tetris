@@ -7,6 +7,7 @@ public abstract class Block {
 
     protected boolean isRotatable;
     protected boolean isMovable;
+    protected boolean isPassable;
 
     public Block() {
         shape = new int[][] {
@@ -17,6 +18,7 @@ public abstract class Block {
 
         isRotatable = true;
         isMovable = true;
+        isPassable = false;
     }
 
     public int[][] getShape() {
@@ -33,6 +35,10 @@ public abstract class Block {
 
     public boolean isRotatable() {
         return isRotatable;
+    }
+
+    public boolean isPassable() {
+        return isPassable;
     }
 
     public void setMovable(boolean b) {

@@ -29,7 +29,7 @@ public class ScoreBoardController {
             scores.remove(14);
 
         scores.add(score);
-        Collections.sort(scores);
+        Collections.sort(scores, Collections.reverseOrder());
 
         scoreDao.write(scores);
 

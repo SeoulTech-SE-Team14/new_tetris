@@ -18,10 +18,10 @@ public class ScoreController {
         double weight = 0.0;
         if (diff.equals("Easy"))
             weight = 1000.0;
-        else if (diff.equals("Noraml"))
-            weight = 1500.0;
-        else if (diff.equals("Hard"))
+        else if (diff.equals("Normal"))
             weight = 2000.0;
+        else if (diff.equals("Hard"))
+            weight = 3000.0;
         else
             weight = 1.0;
 
@@ -29,6 +29,29 @@ public class ScoreController {
             res += (long) (weight * deletedLines * 4 / clock);
         else
             res += (long) (weight / clock);
+
+        score.setScore(res);
+    }
+
+    public void updateScore(Score score, double clock, int  deletedLines, int times) {
+
+        long res = score.getScore();
+        String diff = score.getDifficulty();
+
+        double weight = 0.0;
+        if (diff.equals("Easy"))
+            weight = 1000.0;
+        else if (diff.equals("Normal"))
+            weight = 2000.0;
+        else if (diff.equals("Hard"))
+            weight = 3000.0;
+        else
+            weight = 1.0;
+
+        if (deletedLines != 0)
+            res += (long) (weight * deletedLines * 4 / clock) * times;
+        else
+            res += (long) (weight / clock) * times;
 
         score.setScore(res);
     }

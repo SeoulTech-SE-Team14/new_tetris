@@ -19,12 +19,12 @@ public class GamePauseFrame extends ButtonMoveFrame {
 
     private JLabel title;
 
-    public GamePauseFrame() {
+    public GamePauseFrame(GameFrame gameFrame) {
         super(COUNT);
         
         BorderLayout bl = new BorderLayout();
         setLayout(bl);
-        addKeyListener(new GamePauseListener(this));
+        addKeyListener(new GamePauseListener(this, gameFrame));
 
         Font font = new Font("Noto sans", Font.BOLD, 30);
         title = new JLabel(titleText);
@@ -51,9 +51,5 @@ public class GamePauseFrame extends ButtonMoveFrame {
         setFocusable(true);
         decorateSelectedButton();
         setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        new GamePauseFrame();
     }
 }

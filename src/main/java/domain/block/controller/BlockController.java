@@ -3,99 +3,83 @@ package domain.block.controller;
 import domain.block.entity.Block;
 import domain.block.entity.itemBlock.*;
 import domain.block.entity.tetromino.*;
-import domain.config.controller.BlockColorConfigController;
-import domain.config.controller.DifficultyConfigController;
+import domain.board.entity.Board;
 import domain.config.entity.BlockColorConfig;
 import domain.config.entity.DifficultyConfig;
+import global.matrix.IntMatrixUtil;
 
-import java.awt.*;
 
 public class BlockController {
 
-    private static BlockController INSTANCE = new BlockController();
-    private static DifficultyConfig difficultyConfig = DifficultyConfigController.getInstance().getCurrentConfig();
-    private static BlockColorConfigController blockController = BlockColorConfigController.getInstance();
+    private static final BlockController INSTANCE = new BlockController();
 
-    public static BlockController getInstance() {
+    public static BlockController getInstance()  {
         return INSTANCE;
     }
 
     private BlockController() {
 
-        initRouletteSelection();
-    }
-
-    private void initRouletteSelection() {
     }
     
     public Block rotate(Block block) {
-        if(block.getShape().length == 0){
+        if (!block.isRotatable())
             return block;
-        }
 
-        int row = block.getShape().length;
-        int col = block.getShape().length;
+        int[][] rotatedShape = IntMatrixUtil.rotateClockwise(block.getShape());
+        block.setShape(rotatedShape);
 
-        int[][] blockShape = new int[col][row];
-
-            for(int r=0;r<row;r++){
-                for(int c=0;c<col;c++){
-                    blockShape[c][r] = block.getShape()[row-r-1][c];
-                }
-            }
-        block.setShape(blockShape);
         return block;
     }
-    public int getBlockColor(Block block) {
 
-        if(block instanceof IBlock) {
-            return blockController.getDefault().getiBlockColor();
-        } else if(block instanceof JBlock) {
-            return blockController.getDefault().getjBlockColor();
-        }  else if(block instanceof LBlock) {
-            return blockController.getDefault().getlBlockColor();
-        } else if(block instanceof OBlock) {
-            return blockController.getDefault().getoBlockColor();
-        } else if(block instanceof SBlock) {
-            return blockController.getDefault().getsBlockColor();
-        } else if(block instanceof TBlock) {
-            return blockController.getDefault().gettBlockColor();
-        } else if(block instanceof ZBlock) {
-            return blockController.getDefault().getzBlockColor();
-        } else {
-            return 0xffffff;
-        }
+    public int getBlockColor(Block block, BlockColorConfig blockColorConfig) {
+
+        if(block instanceof IBlock)
+            return blockColorConfig.getiBlockColor();
+        else if(block instanceof JBlock)
+            return blockColorConfig.getjBlockColor();
+        else if(block instanceof LBlock)
+            return blockColorConfig.getlBlockColor();
+        else if(block instanceof OBlock)
+            return blockColorConfig.getoBlockColor();
+        else if(block instanceof SBlock)
+            return blockColorConfig.getsBlockColor();
+        else if(block instanceof TBlock)
+            return blockColorConfig.gettBlockColor();
+        else if(block instanceof ZBlock)
+            return blockColorConfig.getzBlockColor();
+        else
+            return 0xFFFFFF; // WHITE
     }
-    public Block getRandomBlock() {
+    public Block getRandomBlock(DifficultyConfig difficultyConfig) {
         double[] previousProbability = difficultyConfig.getPreviousProbability();
-        int sumOfFitness = difficultyConfig.getSumOfFitness();
-        int seed = (int)(Math.random()*sumOfFitness);
 
-        double threshold = (double)seed / sumOfFitness;
-        if(threshold <= previousProbability[0]){
+        int sumOfFitness = difficultyConfig.getSumOfFitness();
+        int seed = (int)(Math.random() * sumOfFitness);
+
+        double threshold = (double) seed / sumOfFitness;
+
+        if(threshold <= previousProbability[0])
             return new IBlock();
-        }else if(threshold <= previousProbability[1]){
+        else if(threshold <= previousProbability[1])
             return new JBlock();
-        }else if(threshold <= previousProbability[2]){
+        else if(threshold <= previousProbability[2])
             return new LBlock();
-        }else if(threshold <= previousProbability[3] ){
+        else if(threshold <= previousProbability[3] )
             return new OBlock();
-        }else if(threshold <= previousProbability[4]){
+        else if(threshold <= previousProbability[4])
             return new SBlock();
-        }else if(threshold <= previousProbability[5]){
+        else if(threshold <= previousProbability[5])
             return new TBlock();
-        }else if(threshold <= previousProbability[6]){
+        else if(threshold <= previousProbability[6])
             return new ZBlock();
-        }else{
-            //return null;
+        else
             return new IBlock();
-        }
     }
 
-    public Block getRandomItem() {
+    public Block getRandomItem(DifficultyConfig difficultyConfig) {
         int seed = (int)(Math.random()*5);
 
-        switch(seed){
+        switch (seed) {
             case 0:
                 return new BombItem();
             case 1:
@@ -103,27 +87,33 @@ public class BlockController {
             case 2:
                 return new DrillItem();
             case 3:
-                return new LineRemoverItem();
+                return getLineRemoverItem(difficultyConfig);
             case 4:
                 return new WeightItem();
             default:
-                return null;
+                return new BombItem();
         }
     }
 
-    public int getHeight(Block block) {
-        return block.getShape().length;
-    }
+    public Block getLineRemoverItem(DifficultyConfig difficultyConfig) {
+        int seed = (int)(Math.random()*4);
 
-    public int getWidth(Block block) {
-        return block.getShape()[0].length;
-    }
+        Block block = getRandomBlock(difficultyConfig);
 
-    public boolean isMovable(Block block) {
-        return block.isMovable();
-    }
+        int[][] shape = block.getShape();
 
-    public boolean isRotatable(Block block) {
-        return block.isRotatable();
+        for (int x = 0; x < shape.length; x++)
+            for (int y = 0; y < shape[x].length; y++) {
+                if (shape[x][y] != 0) {
+                    if (seed == 0) {
+                        shape[x][y] = Board.TYPE_LINE_REMOVER;
+                        block.setShape(shape);
+                        return block;
+                    }
+                    seed--;
+                }
+            }
+
+        return block;
     }
 }

@@ -29,8 +29,8 @@ public class GameModeSelectListener extends KeyAdapter {
     public void setConfig() {
 
         switch (frame.getFocusIndex()) {
-            case 0: frame.dispose(); new GameFrame(0); break; // 일반
-            case 1: frame.dispose(); new GameFrame(1); break; // 아이템
+            case 0: frame.dispose(); new GameFrame(); break; // 일반
+            case 1: frame.dispose(); new GameFrame("Item"); break; // 아이템
             case 2: frame.dispose(); new MultiGameFrame(); break; // 듀얼
             case 3: frame.dispose(); new IndexFrame(); break;
         }

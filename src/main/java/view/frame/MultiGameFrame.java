@@ -4,7 +4,6 @@ import domain.config.controller.WindowSizeConfigController;
 import domain.config.entity.WindowSizeConfig;
 import view.abstractComponent.frame.DefaultFrame;
 import view.abstractComponent.panel.game.GamePanel;
-import view.keyListener.GameKeyListener;
 
 import java.awt.*;
 
@@ -34,7 +33,7 @@ public class MultiGameFrame extends DefaultFrame {
     public void add(){
         add(playerOneGamePanel, BorderLayout.WEST);
         add(playerTwoGamePanel, BorderLayout.EAST);
-        addKeyListener(new GameKeyListener(playerOneGamePanel, playerTwoGamePanel));
+        // addKeyListener(new GameKeyListener(playerOneGamePanel, playerTwoGamePanel));
     }
     public static void main(String[] args){
         new MultiGameFrame();

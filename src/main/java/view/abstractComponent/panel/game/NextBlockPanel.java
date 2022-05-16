@@ -7,6 +7,11 @@ import domain.block.controller.BlockController;
 import domain.board.controller.BoardController;
 
 import domain.board.entity.Board;
+import domain.config.controller.BlockColorConfigController;
+import domain.config.controller.DifficultyConfigController;
+import domain.config.entity.BlockColorConfig;
+import domain.config.entity.DifficultyConfig;
+import domain.block.entity.Block;
 import domain.block.entity.itemBlock.BombItem;
 import domain.block.entity.itemBlock.DrillItem;
 
@@ -19,14 +24,42 @@ import java.awt.*;
 
 public class NextBlockPanel extends JPanel {
     private LineBorder lineBorder = new LineBorder(Color.WHITE);
-    private Board board;
 
-    public NextBlockPanel(Board board) {
-        this.board = board;
+    private BlockController blockController = BlockController.getInstance();
+    private DifficultyConfigController difficultyConfigController = DifficultyConfigController.getInstance();
+    private BlockColorConfigController blockColorConfigController = BlockColorConfigController.getInstance();
+
+    private Block nextBlock;
+    private DifficultyConfig difficultyConfig;
+    private BlockColorConfig blockColorConfig;
+
+    public Block getNextBlock() {
+        return nextBlock;
+    }
+
+    public NextBlockPanel() {
+        reset();
+
         setBackground(new Color(BoardColorMap.getColor(BoardComponent.EMPTY)));
         setPreferredSize(new Dimension(300, 300));
         setBorder(lineBorder);
     }
+
+    public void reset() {
+        blockColorConfig = blockColorConfigController.getCurrentConfig();
+        difficultyConfig = difficultyConfigController.getCurrentConfig();
+
+        nextBlock = blockController.getRandomBlock(difficultyConfig);
+    }
+
+    public void updateNextBlock() {
+        nextBlock = blockController.getRandomBlock(difficultyConfig);
+    }
+
+    public void updateNextItem() {
+        nextBlock = blockController.getRandomItem(difficultyConfig);
+    }
+
     private int squareWidth() {
         return (int) getSize().getWidth() / 4;
     }
@@ -41,35 +74,34 @@ public class NextBlockPanel extends JPanel {
         g.setFont(new Font("Serif", Font.BOLD, fontSize));
         g.drawString(shape, x * squareWidth(), (int)((y + 1) * squareWidth() * .74));
     }
+
     public void drawNextBlock(Graphics g) {
-        int[][] nextBlockPos = IntMatrixUtil.findAllNotZeroValuePos(board.getPrevBlock().getShape(), IntMatrixUtil.countNotZeroValue(board.getPrevBlock().getShape()));
-        int[] center = IntMatrixUtil.findNearestCenter(board.getPrevBlock().getShape());
+        int[][] blockShape = nextBlock.getShape();
+        int count = IntMatrixUtil.countNotZeroValue(blockShape);
+        int[][] nextBlockPos = IntMatrixUtil.findAllNotZeroValuePos(blockShape, count);
 
-        for (int i = 0; i < IntMatrixUtil.countNotZeroValue(board.getPrevBlock().getShape()); i++) {
-            nextBlockPos[i][0] = 1 + (nextBlockPos[i][0] - center[0]);
-            nextBlockPos[i][1] = 1 + (nextBlockPos[i][1] - center[1]);
-        }
+        for (int i = 0; i < count; i++) {
 
-        for (int i = 0; i < IntMatrixUtil.countNotZeroValue(board.getPrevBlock().getShape()); i++) {
-            int x = nextBlockPos[i][1];
-            int y = nextBlockPos[i][0];
+            int nx = nextBlockPos[i][0];
+            int ny = nextBlockPos[i][1];
 
-            Color color = new Color(BlockController.getInstance().getBlockColor(board.getPrevBlock()));
+            Color color = new Color(blockController.getBlockColor(nextBlock, blockColorConfig));
             String shape;
-            int lineRemoverIdx = BoardController.getInstance().findLineRemover(board.getPrevBlock());
-            if (board.getPrevBlock() instanceof BombItem) {
+            
+            if (blockShape[nx][ny] == Board.TYPE_LINE_REMOVER)
+                    shape = "L";
+            else if (blockShape[nx][ny] == Board.TYPE_BOMB)
                 shape = "B";
-            }
-            else if (board.getPrevBlock() instanceof DrillItem) {
+            else if (blockShape[nx][ny] == Board.TYPE_BONUS_SCORE)
+                shape = "S";
+            else if (blockShape[nx][ny] == Board.TYPE_DRILL)
                 shape = "D";
-            }
-            else if (i == lineRemoverIdx) {
-                shape = "L";
-            }
-            else {
+            else if (blockShape[nx][ny] == Board.TYPE_WEIGHT)
+                shape = "W";
+            else
                 shape = "O";
-            }
-            drawText(g, x, y, color, shape);
+
+            drawText(g, ny, nx + 2, color, shape);
         }
     }
 

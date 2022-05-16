@@ -2,14 +2,18 @@ package view.keyListener;
 
 import java.awt.event.*;
 
+import view.abstractComponent.panel.game.GamePanel;
+import view.frame.GameFrame;
 import view.frame.GamePauseFrame;
 
 public class GamePauseListener extends KeyAdapter {
 
     private GamePauseFrame frame;
+    private GameFrame gameFrame;
 
-    public GamePauseListener(GamePauseFrame frame) {
+    public GamePauseListener(GamePauseFrame frame, GameFrame gameFrame) {
         this.frame = frame;
+        this.gameFrame = gameFrame;
     }
 
     @Override
@@ -26,8 +30,8 @@ public class GamePauseListener extends KeyAdapter {
     public void setConfig() {
 
         switch (frame.getFocusIndex()) {
-            case 0: frame.dispose(); break;
-            case 1: frame.dispose(); break;
+            case 0: frame.dispose(); gameFrame.getGamePanel().restart(); break;
+            case 1: frame.dispose(); gameFrame.gameExit();  break;
         }
     }
     
