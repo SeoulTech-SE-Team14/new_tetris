@@ -30,7 +30,7 @@ public class MultiGameSelectListener  extends KeyAdapter {
         switch (frame.getFocusIndex()) {
             case 0: frame.dispose(); new MultiGameFrame(); break; // 일반
             case 1: frame.dispose(); new MultiGameFrame("Item"); break; // 아이템
-            case 2: frame.dispose(); new MultiGameFrame(30); break; // 듀얼
+            case 2: frame.dispose(); new MultiGameFrame(60); break; // 듀얼
             case 3: frame.dispose(); new GameModeSelectFrame(); break;
         }
     }

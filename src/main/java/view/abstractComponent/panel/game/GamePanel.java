@@ -67,15 +67,15 @@ public class GamePanel extends JPanel {
 
         String diff = difficultyConfig.getDifficulty();
         if (diff.equals("Easy")) {
-            periodInterval = 10000;
+            periodInterval = 1000;
             rateOfDecrease = 8;
         }
         else if (diff.equals("Normal")) {
-            periodInterval = 10000;
+            periodInterval = 1000;
             rateOfDecrease = 10;
         }
         else if (diff.equals("Hard")) {
-            periodInterval = 10000;
+            periodInterval = 1000;
             rateOfDecrease = 12;
         }
 
@@ -165,21 +165,15 @@ public class GamePanel extends JPanel {
         double width = windowSize.getWidth();
         double height = windowSize.getHeight();
 
-        System.out.println(width + " " + height);
-
         int w = 0;
         int h = 0;
 
         w = (int)(height / 2); h = (int)(height);
         boardPanel = new BoardPanel(w, h);
 
-        System.out.println("BoardPanel: " + w + " " + h);
-
         w = (int)(width / 2 - height / 2); h = (int)(width / 2 - height / 2);
         nextBlockPanel = new NextBlockPanel(w, h);
         scorePanel = new ScorePanel();
-
-        System.out.println("NextBlockPanel: " + w + " " + h);
 
         int[][] shape = new int[][] {
             {1},
@@ -189,8 +183,6 @@ public class GamePanel extends JPanel {
         previewPanel = new BoardPanel(w, h);
         previewPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE));
         previewPanel.getNowBlock().setShape(shape);
-
-        System.out.println("PreviewPanel: " + w + " " + h);
 
         eastPanel = new JPanel();
         westPanel = new JPanel();
@@ -262,7 +254,7 @@ public class GamePanel extends JPanel {
         updateTimer.stop();
 
         if (boardPanel.doHitWall()) {
-            deletedTotalLines += 4; // 테스트 용
+            // deletedTotalLines += 4; // 테스트 용
             boardPanel.transformBlockToBoard();
 
             if (frame != null) {
