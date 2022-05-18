@@ -67,15 +67,15 @@ public class GamePanel extends JPanel {
 
         String diff = difficultyConfig.getDifficulty();
         if (diff.equals("Easy")) {
-            periodInterval = 1000;
+            periodInterval = 10000;
             rateOfDecrease = 8;
         }
         else if (diff.equals("Normal")) {
-            periodInterval = 1000;
+            periodInterval = 10000;
             rateOfDecrease = 10;
         }
         else if (diff.equals("Hard")) {
-            periodInterval = 1000;
+            periodInterval = 10000;
             rateOfDecrease = 12;
         }
 
@@ -304,30 +304,11 @@ public class GamePanel extends JPanel {
     }
 
     public void updatePreviewBoard() {
-        if (boardPanel.findFullLine().size() == 0)
+        if (boardPanel.findFullLine().size() <= 1)
             return;
 
         BoardController bController = BoardController.getInstance();
         List<Integer> fullLine = findFullLine();
-        Board myBoard = boardPanel.getBoard();
-        Board myPrevieBoard;
-
-        if (boardPanel.getBoard() == frame.getP1GamePanel().getBoardPanel().getBoard()) {
-            myPrevieBoard = frame.getP1GamePanel().getPreviewPanel().getBoard();
-        }
-        else {
-            myPrevieBoard = frame.getP2GamePanel().getPreviewPanel().getBoard();
-        }
-
-        bController.updatePreviewBoard(myBoard, myPrevieBoard, savedNowBlock, fullLine, savedCurX, savedCurY);
-    }
-
-    public BoardPanel getPreviewPanel() {
-        return previewPanel;
-    }
-
-    public void movePreveiwBoardToBoard() {
-        BoardController bController = BoardController.getInstance();
         Board myBoard = boardPanel.getBoard();
         Board otherPreviewBoard;
 
@@ -338,7 +319,26 @@ public class GamePanel extends JPanel {
             otherPreviewBoard = frame.getP1GamePanel().getPreviewPanel().getBoard();
         }
 
-        bController.moveUpBoard(myBoard, otherPreviewBoard);
+        bController.updatePreviewBoard(myBoard, otherPreviewBoard, savedNowBlock, fullLine, savedCurX, savedCurY);
+    }
+
+    public BoardPanel getPreviewPanel() {
+        return previewPanel;
+    }
+
+    public void movePreveiwBoardToBoard() {
+        BoardController bController = BoardController.getInstance();
+        Board myBoard = boardPanel.getBoard();
+        Board myPreviewBoard;
+
+        if (boardPanel.getBoard() == frame.getP1GamePanel().getBoardPanel().getBoard()) {
+            myPreviewBoard = frame.getP1GamePanel().getPreviewPanel().getBoard();
+        }
+        else {
+            myPreviewBoard = frame.getP2GamePanel().getPreviewPanel().getBoard();
+        }
+
+        bController.moveUpBoard(myBoard, myPreviewBoard);
     }
 
     public void setPeriodInterval() {

@@ -209,9 +209,13 @@ public class BoardController {
     
                 int bx = nowBlockPosInBoard[i][0];
                 int by = nowBlockPosInBoard[i][1];
-        
-                tBoard[bx][by][Board.TYPE] = matrix[ix][iy];
-                tBoard[bx][by][Board.COLOR] = color; 
+
+                try {
+                    tBoard[bx][by][Board.TYPE] = matrix[ix][iy];
+                    tBoard[bx][by][Board.COLOR] = color; 
+                } catch (Exception e) {
+                    continue;
+                }
             }
         }
     }
@@ -282,6 +286,14 @@ public class BoardController {
         board.setCurX(beforeCurX);
         board.setCurY(beforeCurY);
 
+        int previewBoardCount = 0;
+        for (int i = 0; i < 24; i++)
+            if (isExistInLine(previewBoard, i))
+                previewBoardCount++;
+
+        if (previewBoardCount >= 10)
+            return;
+
         // Collections.reverse(toDeleted);
 
         for (int x : toDeleted) {
@@ -304,6 +316,9 @@ public class BoardController {
             }
 
             moveBoardLineUp(previewBoardShape, deletedLineShape, 23);
+            previewBoardCount++;
+            if (previewBoardCount >= 10)
+                return;
         }
     }
 
