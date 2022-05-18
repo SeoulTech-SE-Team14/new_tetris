@@ -13,7 +13,7 @@ public class IntMatrixUtil {
 
         for (int r = 0; r < row; r++)
             for (int c = 0; c < col; c++)
-            res[c][r] = matrix[row - r - 1][c];
+                res[c][r] = matrix[row - r - 1][c];
 
         return res;
     }
@@ -41,16 +41,16 @@ public class IntMatrixUtil {
         return new int[]{ avgR, avgC };
     }
 
-    
-    public static int lengthCenterToBottom(int[][] matrix, int[] center) {
-
-        return matrix.length - center[0];
-    }
-
-    public static int lengthCenterToBottom(int[][] matrix) {
-
-        return lengthCenterToBottom(matrix, findNearestCenter(matrix));
-    }
+//
+//    public static int lengthCenterToBottom(int[][] matrix, int[] center) {
+//
+//        return matrix.length - center[0];
+//    }
+//
+//    public static int lengthCenterToBottom(int[][] matrix) {
+//
+//        return lengthCenterToBottom(matrix, findNearestCenter(matrix));
+//    }
 
     public static int countNotZeroValue(int[][] matrix) {
         int row = matrix.length;
