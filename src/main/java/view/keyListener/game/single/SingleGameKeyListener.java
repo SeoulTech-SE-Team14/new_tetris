@@ -1,4 +1,4 @@
-package view.keyListener;
+package view.keyListener.game.single;
 
 import java.awt.event.*;
 
@@ -6,8 +6,8 @@ import domain.config.constant.key.KeyType;
 import domain.config.controller.KeyConfigController;
 import domain.config.entity.KeyConfig;
 import view.abstractComponent.panel.game.GamePanel;
-import view.frame.GameFrame;
-import view.frame.GamePauseFrame;
+import view.frame.game.GameFrame;
+import view.frame.game.GamePauseFrame;
 
 public class SingleGameKeyListener extends KeyAdapter {
 

@@ -20,7 +20,7 @@ public class ScoreBoardTableRenderer extends DefaultTableCellRenderer {
         
         Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column); 
         if (! table.isRowSelected(row)) { 
-            if(table.getValueAt(row, 3).toString().indexOf(timestamp)!=-1) {
+            if(table.getValueAt(row, 3).toString().equals(timestamp)) {
                 c.setBackground(Color.GRAY); 
                 return c;
             }else {

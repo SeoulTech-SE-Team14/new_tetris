@@ -13,7 +13,7 @@ public class JsonDao<T> {
 
     private static ObjectMapper mapper = new ObjectMapper();
 
-    private static final String HEADER = "";
+    private static final String HEADER = "./";
     private static final String FOOTER = ".json";
 
 

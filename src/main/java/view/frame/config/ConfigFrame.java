@@ -1,4 +1,4 @@
-package view.frame;
+package view.frame.config;
 
 import javax.swing.JLabel;
 
@@ -12,7 +12,7 @@ import view.abstractComponent.panel.config.OtherConfigPanel;
 import view.abstractComponent.panel.config.P1KeyConfigPanel;
 import view.abstractComponent.panel.config.P2KeyConfigPanel;
 import view.abstractComponent.panel.config.WindowSizeConfigPanel;
-import view.keyListener.ConfigKeyListener;
+import view.keyListener.config.ConfigKeyListener;
 
 public class ConfigFrame extends DefaultFrame {
 

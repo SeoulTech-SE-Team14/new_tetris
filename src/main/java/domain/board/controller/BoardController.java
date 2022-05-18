@@ -1,6 +1,8 @@
 package domain.board.controller;
 
+import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import domain.block.entity.Block;
@@ -88,6 +90,14 @@ public class BoardController {
             board[0][i][Board.TYPE] = Board.TYPE_EMPTY;
             board[0][i][Board.COLOR] = BoardColorMap.getColor(BoardComponent.EMPTY);
         }
+    }
+
+    private void moveBoardLineUp(int[][][] board, int[][] createdLine, int index) {
+
+        for (int i = 0; i < index; i++)
+            board[i] = board[i  + 1];
+
+        board[index] = createdLine;
     }
 
     public List<Integer> findFullLine(Board board) {
@@ -253,5 +263,75 @@ public class BoardController {
         }
 
         return true;
+    }
+
+    public void updatePreviewBoard(Board board, Board previewBoard, Block nowBlock, List<Integer> toDeleted, int savedCurX, int savedCurY) {
+        if (toDeleted.isEmpty())
+            return;
+
+        int beforeCurX = board.getCurX();
+        int beforeCurY = board.getCurY();
+
+        board.setCurX(savedCurX);
+        board.setCurY(savedCurY);
+        
+        int[][] nowBlockPosInBoard = findNowBlockPosInBoard(board, nowBlock);
+        int[][][] boardShape = board.getBoard();
+        int[][][] previewBoardShape = previewBoard.getBoard();
+
+        board.setCurX(beforeCurX);
+        board.setCurY(beforeCurY);
+
+        // Collections.reverse(toDeleted);
+
+        for (int x : toDeleted) {
+            int[][] deletedLineShape = new int[10][2];
+
+            for (int y = 0; y < 10; y++) {
+                deletedLineShape[y][Board.TYPE] = boardShape[x][y][Board.TYPE];
+                if (deletedLineShape[y][Board.TYPE] != Board.TYPE_EMPTY)
+                    deletedLineShape[y][Board.COLOR] = 0xDCDCDC;
+            }
+
+            for (int i = 0; i < nowBlockPosInBoard.length; i++) {
+                int bx = nowBlockPosInBoard[i][0];
+                int by = nowBlockPosInBoard[i][1];
+
+                if (bx == x) {
+                    deletedLineShape[by][Board.TYPE] = Board.TYPE_EMPTY;
+                    deletedLineShape[by][Board.COLOR] = 0x000000;
+                }
+            }
+
+            moveBoardLineUp(previewBoardShape, deletedLineShape, 23);
+        }
+    }
+
+    public void moveUpBoard(Board board, Board previewBoard) {
+        int cnt = 0;
+
+        try {
+            while (isExistInLine(previewBoard, 23)) {
+                if (cnt == 10)
+                    return;
+
+                moveBoardLineUp(board.getBoard(), previewBoard.getBoard()[23], 23);
+                moveBoardLineDown(previewBoard.getBoard(), 23);
+
+                cnt++;
+            }
+        } catch (Exception e) {
+            //TODO: handle exception
+        }
+    }
+
+    private boolean isExistInLine(Board board, int index) {
+        int[][][] boardShape = board.getBoard();
+
+        for (int i = 0; i < 10; i++)
+            if (boardShape[index][i][Board.TYPE] != Board.TYPE_EMPTY)
+                return true;
+
+        return false;
     }
 }

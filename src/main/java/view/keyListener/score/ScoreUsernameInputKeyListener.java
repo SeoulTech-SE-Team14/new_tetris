@@ -1,4 +1,4 @@
-package view.keyListener;
+package view.keyListener.score;
 
 import java.awt.event.*;
 
@@ -6,8 +6,8 @@ import javax.swing.JTextField;
 
 import domain.score.controller.ScoreBoardController;
 import domain.score.entity.Score;
-import view.frame.ScoreBoardFrame;
-import view.frame.ScoreUsernameInputFrame;
+import view.frame.score.ScoreBoardFrame;
+import view.frame.score.ScoreUsernameInputFrame;
 
 public class ScoreUsernameInputKeyListener extends KeyAdapter {
 

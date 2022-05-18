@@ -1,11 +1,12 @@
-package view.keyListener;
+package view.keyListener.game;
 
 import java.awt.event.*;
 
-import view.frame.GameFrame;
-import view.frame.GameModeSelectFrame;
 import view.frame.IndexFrame;
-import view.frame.MultiGameFrame;
+import view.frame.game.GameFrame;
+import view.frame.game.GameModeSelectFrame;
+import view.frame.game.multi.MultiGameFrame;
+import view.frame.game.multi.MultiGameSelectFrame;
 
 public class GameModeSelectListener extends KeyAdapter {
     
@@ -31,7 +32,7 @@ public class GameModeSelectListener extends KeyAdapter {
         switch (frame.getFocusIndex()) {
             case 0: frame.dispose(); new GameFrame(); break; // 일반
             case 1: frame.dispose(); new GameFrame("Item"); break; // 아이템
-            case 2: frame.dispose(); new MultiGameFrame(); break; // 듀얼
+            case 2: frame.dispose(); new MultiGameSelectFrame(); break; // 듀얼
             case 3: frame.dispose(); new IndexFrame(); break;
         }
     }

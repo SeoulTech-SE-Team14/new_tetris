@@ -1,9 +1,9 @@
-package view.keyListener;
+package view.keyListener.score;
 
 import java.awt.event.*;
 
 import view.frame.IndexFrame;
-import view.frame.ScoreBoardFrame;
+import view.frame.score.ScoreBoardFrame;
 
 public class ScoreBoardKeyListener extends KeyAdapter {
 

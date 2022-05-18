@@ -1,11 +1,11 @@
-package view.keyListener;
+package view.keyListener.config;
 
 import java.awt.event.*;
 
 import domain.score.controller.ScoreBoardController;
 import view.abstractComponent.panel.config.*;
-import view.frame.ConfigFrame;
 import view.frame.IndexFrame;
+import view.frame.config.ConfigFrame;
 
 public class ConfigKeyListener extends KeyAdapter {
 

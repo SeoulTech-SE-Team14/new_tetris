@@ -1,17 +1,16 @@
-package view.keyListener;
+package view.keyListener.game.multi;
 
 import java.awt.event.*;
 
-import view.abstractComponent.panel.game.GamePanel;
-import view.frame.GameFrame;
-import view.frame.GamePauseFrame;
+import view.frame.game.multi.MultiGameFrame;
+import view.frame.game.multi.MultiGamePauseFrame;
 
-public class GamePauseListener extends KeyAdapter {
+public class MultiGamePauseListener extends KeyAdapter {
+    
+    private MultiGamePauseFrame frame;
+    private MultiGameFrame gameFrame;
 
-    private GamePauseFrame frame;
-    private GameFrame gameFrame;
-
-    public GamePauseListener(GamePauseFrame frame, GameFrame gameFrame) {
+    public MultiGamePauseListener(MultiGamePauseFrame frame, MultiGameFrame gameFrame) {
         this.frame = frame;
         this.gameFrame = gameFrame;
     }
@@ -30,9 +29,8 @@ public class GamePauseListener extends KeyAdapter {
     public void setConfig() {
 
         switch (frame.getFocusIndex()) {
-            case 0: frame.dispose(); gameFrame.getGamePanel().restart(); break;
+            case 0: frame.dispose(); gameFrame.restart(); break;
             case 1: frame.dispose(); gameFrame.gameExit();  break;
         }
     }
-    
 }

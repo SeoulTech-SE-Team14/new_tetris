@@ -1,6 +1,7 @@
 package domain.block.controller;
 
 import domain.block.entity.Block;
+import domain.block.entity.EmptyBlock;
 import domain.block.entity.itemBlock.*;
 import domain.block.entity.tetromino.*;
 import domain.board.entity.Board;
@@ -47,6 +48,8 @@ public class BlockController {
             return blockColorConfig.gettBlockColor();
         else if(block instanceof ZBlock)
             return blockColorConfig.getzBlockColor();
+        else if (block instanceof EmptyBlock)
+            return 0x000000;
         else
             return 0xFFFFFF; // WHITE
     }

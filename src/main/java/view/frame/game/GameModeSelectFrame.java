@@ -1,4 +1,4 @@
-package view.frame;
+package view.frame.game;
 
 import java.awt.*;
 
@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import view.abstractComponent.frame.ButtonMoveFrame;
-import view.keyListener.GameModeSelectListener;
+import view.keyListener.game.GameModeSelectListener;
 
 public class GameModeSelectFrame extends ButtonMoveFrame {
     
@@ -15,7 +15,7 @@ public class GameModeSelectFrame extends ButtonMoveFrame {
     private final String[] buttonTexts = {
         "일반 모드",
         "아이템 모드",
-        "듀열 모드",
+        "듀얼 모드",
         "나가기"
     };
 

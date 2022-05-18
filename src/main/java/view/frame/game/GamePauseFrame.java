@@ -1,11 +1,11 @@
-package view.frame;
+package view.frame.game;
 
 import java.awt.*;
 
 import javax.swing.*;
 
 import view.abstractComponent.frame.ButtonMoveFrame;
-import view.keyListener.GamePauseListener;
+import view.keyListener.game.GamePauseListener;
 
 public class GamePauseFrame extends ButtonMoveFrame {
     

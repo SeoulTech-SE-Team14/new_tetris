@@ -132,7 +132,7 @@ public class BoardPanel extends JPanel {
         int fontSize = squareWidth();
         g.setColor(color);
         g.setFont(new Font("Serif", Font.BOLD, fontSize));
-        g.drawString(shape, x * squareWidth(), (int)((y + 1) * squareWidth() * .74));
+        g.drawString(shape, x + 1, y + 1);
     }
 
     public void drawBoard(Graphics g) {
@@ -142,6 +142,9 @@ public class BoardPanel extends JPanel {
             for (int c = 0; c < 10; c++) {
                 Color color = new Color(tBoard[r][c][Board.COLOR]);
                 String shape;
+
+                int xPos = c * squareWidth();
+                int yPos = (r - 3) * squareHeight();
 
                 if (tBoard[r][c][Board.TYPE] == Board.TYPE_LINE_REMOVER)
                     shape = "L";
@@ -157,7 +160,7 @@ public class BoardPanel extends JPanel {
                     shape = "O";
                 }
 
-                drawText(g, c, (r - 4), color, shape);
+                drawText(g, xPos, yPos, color, shape);
             }
         }
     }
@@ -190,9 +193,12 @@ public class BoardPanel extends JPanel {
                 shape = "O";
 
             int bx = nowBlockPosInBoard[i][1];
-            int by = nowBlockPosInBoard[i][0] - 4;
+            int by = nowBlockPosInBoard[i][0];
 
-            drawText(g, bx, by, color, shape);
+            int xPos = bx * squareWidth();
+            int yPos = (by - 3) * squareHeight();
+
+            drawText(g, xPos, yPos, color, shape);
         }
     }
 
@@ -212,6 +218,10 @@ public class BoardPanel extends JPanel {
 
     public void rotate() {
         boardController.rotate(board, nowBlock);
+    }
+
+    public List<Integer> findFullLine() {
+        return boardController.findFullLine(board);
     }
 
     @Override

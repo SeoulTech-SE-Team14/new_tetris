@@ -1,4 +1,6 @@
-package view.frame;
+package view.frame.game;
+
+import javax.swing.Timer;
 
 import domain.config.controller.WindowSizeConfigController;
 
@@ -6,12 +8,16 @@ import domain.config.entity.WindowSizeConfig;
 import domain.score.entity.Score;
 import view.abstractComponent.frame.DefaultFrame;
 import view.abstractComponent.panel.game.GamePanel;
-import view.keyListener.SingleGameKeyListener;
+import view.frame.score.ScoreUsernameInputFrame;
+import view.keyListener.game.GameFrameActionListener;
+import view.keyListener.game.single.SingleGameKeyListener;
 
 public class GameFrame extends DefaultFrame {
     WindowSizeConfig windowSize = WindowSizeConfigController.getInstance().getCurrentConfig();
     
     private GamePanel gamePanel;
+
+    private Timer updateTimer;
 
     public GameFrame() { 
 
@@ -23,9 +29,13 @@ public class GameFrame extends DefaultFrame {
 
         addKeyListener(new SingleGameKeyListener(this));
 
+        updateTimer = new Timer(25, new GameFrameActionListener(this));
+        updateTimer.start();
+
         setFocusable(true);
         setVisible(true);
     }
+    
     public GameFrame(String mode) {
         this();
 
@@ -49,9 +59,14 @@ public class GameFrame extends DefaultFrame {
     }
 
     public void gameExit() {
+        updateTimer.stop();
         Score score = gamePanel.getScore();
         new ScoreUsernameInputFrame(score);
         dispose();
+    }
+
+    public boolean isGameOver() {
+        return gamePanel.isGameOver();
     }
 
     @Override

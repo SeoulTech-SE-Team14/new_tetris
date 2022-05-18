@@ -1,4 +1,4 @@
-package view.frame;
+package view.frame.score;
 
 import java.awt.*;
 
@@ -10,7 +10,7 @@ import javax.swing.JTextField;
 import domain.score.entity.Score;
 import view.abstractComponent.frame.DefaultFrame;
 import view.abstractComponent.panel.ScoreDetailsPanel;
-import view.keyListener.ScoreUsernameInputKeyListener;
+import view.keyListener.score.ScoreUsernameInputKeyListener;
 
 public class ScoreUsernameInputFrame extends DefaultFrame {
 

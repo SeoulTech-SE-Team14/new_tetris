@@ -1,21 +1,28 @@
 package view.abstractComponent.panel.game;
 
+import domain.block.entity.Block;
 import domain.block.entity.itemBlock.BonusScoreItem;
+import domain.board.controller.BoardController;
+import domain.board.entity.Board;
 import domain.config.controller.DifficultyConfigController;
 import domain.config.controller.WindowSizeConfigController;
 import domain.config.entity.DifficultyConfig;
 import domain.config.entity.WindowSizeConfig;
 import domain.score.entity.Score;
 import view.abstractComponent.frame.DefaultFrame;
-import view.keyListener.GameRedrawActionListener;
-import view.keyListener.GameUpdateActionListener;
+import view.frame.game.multi.MultiGameFrame;
+import view.keyListener.game.GameRedrawActionListener;
+import view.keyListener.game.GameUpdateActionListener;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.List;
 
 public class GamePanel extends JPanel {
+
+    private MultiGameFrame frame;
     
     private WindowSizeConfigController windowSizeConfigController = WindowSizeConfigController.getInstance();
     private DifficultyConfigController difficultyConfigController = DifficultyConfigController.getInstance();
@@ -48,7 +55,6 @@ public class GamePanel extends JPanel {
         super();
 
         initPanel();
-        setPanelSigleMode();
         addComponents();
 
         reset();
@@ -97,12 +103,18 @@ public class GamePanel extends JPanel {
         scorePanel.setMode("Default");
     }
 
-    public GamePanel(int width, int height) {
+    public GamePanel(int width, int height, MultiGameFrame frame) {
         super();
 
-        initPanel();
-        setPanelMultiMode(width, height);
+        this.frame = frame;
+
+        BorderLayout bl = new BorderLayout();
+        setLayout(bl);
+
+        initMultiPanel();
         addComponents();
+
+        previewPanel.setVisible(true);
     }
 
     public BoardPanel getBoardPanel() {
@@ -111,41 +123,98 @@ public class GamePanel extends JPanel {
 
 
     private void initPanel(){
-        boardPanel = new BoardPanel(300, 300);
+        double width = windowSize.getWidth();
+        double height = windowSize.getHeight();
+
+        int intHeight = (int) height;
+        int heightD2 = (int) (height / 2);
+        int height2D5 = (int) (height / 5 * 2);
+        int height7D10 = (int) (height / 10 * 7);
+        int heightD5 = (int) (height / 5);
+        int heightD10 = (int) (height / 10);
+
+        boardPanel = new BoardPanel(heightD2, intHeight);
         nextBlockPanel = new NextBlockPanel();
         scorePanel = new ScorePanel();
-        previewPanel = new BoardPanel(300, 300);
+
+        int[][] shape = new int[][] {
+            {1},
+        };
+
+        previewPanel = new BoardPanel(heightD5, height2D5);
+        previewPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        previewPanel.getNowBlock().setShape(shape);
 
         eastPanel = new JPanel();
         westPanel = new JPanel();
         westPanel.setBackground(Color.GRAY);
 
+        westPanel.setPreferredSize(new Dimension((int) width - height7D10, intHeight));
+
+        boardPanel.setPreferredSize(new Dimension(heightD2, intHeight));
+        nextBlockPanel.setPreferredSize(new Dimension(heightD5, heightD5));
+        scorePanel.setPreferredSize(new Dimension(heightD5, heightD10));
+        previewPanel.setPreferredSize(new Dimension(heightD5, height2D5));
+
         setLayout(new BorderLayout());
     }
-    private void setPanelSigleMode(){
-        westPanel.setPreferredSize(new Dimension((int)(windowSize.getWidth()/4), windowSize.getHeight()));
-        eastPanel.setPreferredSize(new Dimension((int)(windowSize.getWidth()/4), windowSize.getHeight()/2));
-        boardPanel.setPreferredSize(new Dimension((int)(windowSize.getWidth()/3), (int)(windowSize.getHeight()*0.9)));
-        nextBlockPanel.setPreferredSize(new Dimension((int)(windowSize.getWidth()/6), (int)(windowSize.getWidth()/6)));
-        scorePanel.setPreferredSize(new Dimension((int)(windowSize.getWidth()/6), (int)(windowSize.getWidth()/6)));
-    }
 
-    private void setPanelMultiMode(int width, int height){
-        westPanel.setPreferredSize(new Dimension(0, height));
-        eastPanel.setPreferredSize(new Dimension((int)(width*0.3), height/2));
-        boardPanel.setPreferredSize(new Dimension((int)(width*0.6), (int)(height*0.9)));
-        nextBlockPanel.setPreferredSize(new Dimension((int)(width/5), (int)(width/5)));
-        scorePanel.setPreferredSize(new Dimension((int)(width/5), (int)(width/5)));
+    private void initMultiPanel(){
+        double width = windowSize.getWidth();
+        double height = windowSize.getHeight();
+
+        int w = 0;
+        int h = 0;
+
+        w = (int)(height / 2); h = (int)(height);
+        boardPanel = new BoardPanel(w, h);
+        nextBlockPanel = new NextBlockPanel();
+        scorePanel = new ScorePanel();
+
+        int[][] shape = new int[][] {
+            {1},
+        };
+
+        w = (int)(width / 2 - height / 2); h = (int)(((width / 2 - height / 2)) * 2);
+        previewPanel = new BoardPanel(w, h);
+        previewPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        previewPanel.getNowBlock().setShape(shape);
+
+        eastPanel = new JPanel();
+        westPanel = new JPanel();
+        westPanel.setBackground(Color.GRAY);
+
+        w = (int)(height / 2); h = (int)(height);
+        boardPanel.setPreferredSize(new Dimension(w, h));
+
+        w = (int)(width / 2 - height / 2); h = (int)(width / 2 - height / 2);
+        nextBlockPanel.setPreferredSize(new Dimension(w, h));
+
+        w = (int)(width / 2 - height / 2); h = (int)(width / 2 - height / 2);
+        scorePanel.setPreferredSize(new Dimension(w, h));
+
+        w = (int)(width / 2 - height / 2); h = (int)(((width / 2 - height / 2)) * 2);
+        previewPanel.setPreferredSize(new Dimension(w, h));
+
+        setLayout(new BorderLayout());
     }
 
     private void addComponents() {
+        BoxLayout bl = new BoxLayout(eastPanel, BoxLayout.PAGE_AXIS);
+        eastPanel.setLayout(bl);
+
         eastPanel.setBackground(Color.GRAY);
         eastPanel.add(nextBlockPanel);
         eastPanel.add(scorePanel);
+        eastPanel.add(previewPanel);
 
         add(westPanel, BorderLayout.WEST);
         add(boardPanel, BorderLayout.CENTER);
         add(eastPanel, BorderLayout.EAST);
+    }
+
+    public void setVisiblePreviewBoard() {
+        previewPanel.setVisible(true);
     }
 
     @Override
@@ -162,6 +231,10 @@ public class GamePanel extends JPanel {
         return boardPanel.isGameOver();
     }
 
+    private Block savedNowBlock;
+    private int savedCurX;
+    private int savedCurY;
+
     public void update() {
         if (isPause)
             return;
@@ -170,13 +243,20 @@ public class GamePanel extends JPanel {
             redrawTimer.stop();
         }
 
-        System.out.println("update");
-
         updateTimer.stop();
 
         if (boardPanel.doHitWall()) {
-            deletedTotalLines += 4; // 추후 삭제 System.out.println()
+            deletedTotalLines += 4; // 테스트 용
             boardPanel.transformBlockToBoard();
+
+            if (frame != null) {
+                savedNowBlock = boardPanel.getNowBlock();
+                savedCurX = boardPanel.getBoard().getCurX();
+                savedCurY = boardPanel.getBoard().getCurY();
+
+                movePreveiwBoardToBoard();
+            }
+
             boardPanel.updateNowBlock(nextBlockPanel.getNextBlock());
 
             if (isItemMode) {
@@ -191,6 +271,9 @@ public class GamePanel extends JPanel {
 
             setPeriodInterval();
         } else {
+            if (frame != null) 
+                updatePreviewBoard();
+
             int deletedLines = boardPanel.update();
             deletedTotalLines += deletedLines;
             if (boardPanel.getNowBlock() instanceof BonusScoreItem) {
@@ -202,6 +285,44 @@ public class GamePanel extends JPanel {
 
         updateTimer.start();
 
+    }
+
+    public void updatePreviewBoard() {
+        if (boardPanel.findFullLine().size() == 0)
+            return;
+
+        BoardController bController = BoardController.getInstance();
+        List<Integer> fullLine = findFullLine();
+        Board myBoard = boardPanel.getBoard();
+        Board myPrevieBoard;
+
+        if (boardPanel.getBoard() == frame.getP1GamePanel().getBoardPanel().getBoard()) {
+            myPrevieBoard = frame.getP1GamePanel().getPreviewPanel().getBoard();
+        }
+        else {
+            myPrevieBoard = frame.getP2GamePanel().getPreviewPanel().getBoard();
+        }
+
+        bController.updatePreviewBoard(myBoard, myPrevieBoard, savedNowBlock, fullLine, savedCurX, savedCurY);
+    }
+
+    public BoardPanel getPreviewPanel() {
+        return previewPanel;
+    }
+
+    public void movePreveiwBoardToBoard() {
+        BoardController bController = BoardController.getInstance();
+        Board myBoard = boardPanel.getBoard();
+        Board otherPreviewBoard;
+
+        if (boardPanel.getBoard() == frame.getP1GamePanel().getBoardPanel().getBoard()) {
+            otherPreviewBoard = frame.getP2GamePanel().getPreviewPanel().getBoard();
+        }
+        else {
+            otherPreviewBoard = frame.getP1GamePanel().getPreviewPanel().getBoard();
+        }
+
+        bController.moveUpBoard(myBoard, otherPreviewBoard);
     }
 
     public void setPeriodInterval() {
@@ -264,6 +385,10 @@ public class GamePanel extends JPanel {
 
     public void rotate() {
         boardPanel.rotate();
+    }
+
+    public List<Integer> findFullLine() {
+        return boardPanel.findFullLine();
     }
 
     public static void main(String[] args) {
