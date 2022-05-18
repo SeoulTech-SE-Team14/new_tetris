@@ -28,12 +28,20 @@ public class WindowSizeConfigController {
         return new WindowSizeConfig(800, 600);
     }
 
+    public WindowSizeConfig getW1000_H800() {
+        return new WindowSizeConfig(1000, 800);
+    }
+
     public WindowSizeConfig getW1280_H960() {
         return new WindowSizeConfig(1280, 960);
     }
 
     public WindowSizeConfig getW1920_H1080() {
         return new WindowSizeConfig(1920, 1080);
+    }
+
+    public WindowSizeConfig getW1440_H900() {
+        return new WindowSizeConfig(1440, 900);
     }
 
     public WindowSizeConfig getCurrentConfig() {

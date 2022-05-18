@@ -92,8 +92,8 @@ public class MultiGameFrame extends DefaultFrame {
     }
 
     public void initPanel(){
-        p1GamePanel = new GamePanel(windowSize.getWidth()/2, windowSize.getHeight(), this);
-        p2GamePanel = new GamePanel(windowSize.getWidth()/2, windowSize.getHeight(), this);
+        p1GamePanel = new GamePanel(windowSize.getWidth(), windowSize.getHeight(), this);
+        p2GamePanel = new GamePanel(windowSize.getWidth(), windowSize.getHeight(), this);
 
         GridLayout gl = new GridLayout(0, 2);
 

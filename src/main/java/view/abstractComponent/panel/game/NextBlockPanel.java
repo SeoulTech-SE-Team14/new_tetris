@@ -33,15 +33,31 @@ public class NextBlockPanel extends JPanel {
     private DifficultyConfig difficultyConfig;
     private BlockColorConfig blockColorConfig;
 
+    private int squareWidth;
+    private int squareHeight;
+
     public Block getNextBlock() {
         return nextBlock;
     }
 
     public NextBlockPanel() {
+        squareWidth = (int) getSize().getWidth() / 4;
+        squareHeight = (int) getSize().getHeight() / 4;
+
         reset();
 
         setBackground(new Color(BoardColorMap.getColor(BoardComponent.EMPTY)));
         setPreferredSize(new Dimension(300, 300));
+        setBorder(lineBorder);
+    }
+
+    public NextBlockPanel(int width, int height) {
+        squareWidth = (int) (width / 4.0);
+        squareHeight = (int) (height / 4.0);
+
+        reset();
+
+        setBackground(new Color(BoardColorMap.getColor(BoardComponent.EMPTY)));
         setBorder(lineBorder);
     }
 
@@ -61,10 +77,10 @@ public class NextBlockPanel extends JPanel {
     }
 
     private int squareWidth() {
-        return (int) getSize().getWidth() / 4;
+        return squareWidth;
     }
     private int squareHeight() {
-        return (int) getSize().getHeight() / 4;
+        return squareHeight;
     }
 
     // draw method

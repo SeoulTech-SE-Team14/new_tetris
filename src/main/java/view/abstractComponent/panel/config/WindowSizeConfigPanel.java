@@ -11,8 +11,8 @@ public class WindowSizeConfigPanel extends ConfigPanel {
     private static final String titleText = "창 크기";
     private static final String[] buttonTexts = {
         "800_600",
+        "1000_800",
         "1280_960",
-        "1920_1080",
     };
     
     private static WindowSizeConfigController windowSizeConfigController = WindowSizeConfigController.getInstance();
@@ -38,11 +38,11 @@ public class WindowSizeConfigPanel extends ConfigPanel {
             case 0: // 800_600
                 windowSizeConfig = windowSizeConfigController.getW800_H600();
                 break;
-            case 1: // 1280_960 
-                windowSizeConfig = windowSizeConfigController.getW1280_H960();
+            case 1: // 1000_800
+                windowSizeConfig = windowSizeConfigController.getW1000_H800();
                 break;
-            case 2: // 1920_1080
-                windowSizeConfig = windowSizeConfigController.getW1920_H1080();
+            case 2: // 1280_960
+                windowSizeConfig = windowSizeConfigController.getW1280_H960();
                 break;
             default:
                 return;
@@ -58,8 +58,8 @@ public class WindowSizeConfigPanel extends ConfigPanel {
     public void updateSelectedIndex() {
         switch (windowSizeConfig.getWidth()) {
             case 800: setSelectedIndex(0); break;
-            case 1280: setSelectedIndex(1); break;
-            case 1920: setSelectedIndex(2); break;
+            case 1000: setSelectedIndex(1); break;
+            case 1280: setSelectedIndex(2); break;
         }
     }
 

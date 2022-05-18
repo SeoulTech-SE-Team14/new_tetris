@@ -37,6 +37,7 @@ public class GamePanel extends JPanel {
 
     private JPanel eastPanel;
     private JPanel westPanel;
+    private JPanel eastSouthPanel;
 
     private boolean isItemMode;
     private int deletedTotalLines;
@@ -134,8 +135,9 @@ public class GamePanel extends JPanel {
         int heightD10 = (int) (height / 10);
 
         boardPanel = new BoardPanel(heightD2, intHeight);
-        nextBlockPanel = new NextBlockPanel();
+        nextBlockPanel = new NextBlockPanel(heightD5, heightD5);
         scorePanel = new ScorePanel();
+        eastSouthPanel = new JPanel();
 
         int[][] shape = new int[][] {
             {1},
@@ -163,13 +165,21 @@ public class GamePanel extends JPanel {
         double width = windowSize.getWidth();
         double height = windowSize.getHeight();
 
+        System.out.println(width + " " + height);
+
         int w = 0;
         int h = 0;
 
         w = (int)(height / 2); h = (int)(height);
         boardPanel = new BoardPanel(w, h);
-        nextBlockPanel = new NextBlockPanel();
+
+        System.out.println("BoardPanel: " + w + " " + h);
+
+        w = (int)(width / 2 - height / 2); h = (int)(width / 2 - height / 2);
+        nextBlockPanel = new NextBlockPanel(w, h);
         scorePanel = new ScorePanel();
+
+        System.out.println("NextBlockPanel: " + w + " " + h);
 
         int[][] shape = new int[][] {
             {1},
@@ -180,8 +190,11 @@ public class GamePanel extends JPanel {
         previewPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE));
         previewPanel.getNowBlock().setShape(shape);
 
+        System.out.println("PreviewPanel: " + w + " " + h);
+
         eastPanel = new JPanel();
         westPanel = new JPanel();
+        eastSouthPanel = new JPanel();
         westPanel.setBackground(Color.GRAY);
 
         w = (int)(height / 2); h = (int)(height);
@@ -207,6 +220,9 @@ public class GamePanel extends JPanel {
         eastPanel.add(nextBlockPanel);
         eastPanel.add(scorePanel);
         eastPanel.add(previewPanel);
+        eastPanel.add(eastSouthPanel);
+
+        eastSouthPanel.setBackground(Color.GRAY);
 
         add(westPanel, BorderLayout.WEST);
         add(boardPanel, BorderLayout.CENTER);
