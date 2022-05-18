@@ -1,5 +1,10 @@
 package domain.block.controller;
 
+import domain.block.entity.tetromino.*;
+import domain.board.controller.BoardController;
+import domain.config.entity.BlockColorConfig;
+import domain.config.entity.DifficultyConfig;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import domain.block.entity.Block;
@@ -8,17 +13,20 @@ import domain.block.entity.itemBlock.BonusScoreItem;
 import domain.block.entity.itemBlock.DrillItem;
 import domain.block.entity.itemBlock.LineRemoverItem;
 import domain.block.entity.itemBlock.WeightItem;
-import domain.block.entity.tetromino.IBlock;
-import domain.block.entity.tetromino.JBlock;
-import domain.block.entity.tetromino.LBlock;
-import domain.block.entity.tetromino.OBlock;
-import domain.block.entity.tetromino.TBlock;
 import domain.board.entity.Board;
 import global.matrix.IntMatrixUtil;
 
 import static org.junit.jupiter.api.Assertions.*;
 class BlockControllerTest {
 
+    DifficultyConfig difficultyConfig;
+    BlockColorConfig blockColorConfig;
+
+    @BeforeEach
+    void beforeEach() {
+        difficultyConfig = new DifficultyConfig();
+        blockColorConfig = new BlockColorConfig();
+    }
     @Test
     void getRandomBlock() {
         final int COUNT = 1000;
@@ -36,7 +44,7 @@ class BlockControllerTest {
 
         for(int i=0;i<COUNT;i++){
 
-            Block value = getRandomItem();
+            Block value = BlockController.getInstance().getRandomBlock(difficultyConfig);
 
             if(value instanceof IBlock){
                 icnt++;
@@ -65,13 +73,13 @@ class BlockControllerTest {
 
     @Test
     void getBlockColor() {
-        assertTrue(blockColorConfig.getiBlockColor(), 0x00ffff);
-        assertTrue(blockColorConfig.getjBlockColor(), 0x0000ff);
-        assertTrue(blockColorConfig.getlBlockColor(), 0xff7f00);
-        assertTrue(blockColorConfig.getoBlockColor(), 0xffff00);
-        assertTrue(blockColorConfig.getsBlockColor(), 0x00ff00);
-        assertTrue(blockColorConfig.gettBlockColor(), 0x800080);
-        assertTrue(blockColorConfig.getzBlockColor(), 0xff0000);
+        assertEquals(0x00ffff, BlockController.getInstance().getBlockColor(new IBlock(), blockColorConfig));
+        assertEquals(0x0000ff, BlockController.getInstance().getBlockColor(new JBlock(), blockColorConfig));
+        assertEquals(0xff7f00, BlockController.getInstance().getBlockColor(new LBlock(), blockColorConfig));
+        assertEquals(0xffff00, BlockController.getInstance().getBlockColor(new OBlock(), blockColorConfig));
+        assertEquals(0x00ff00, BlockController.getInstance().getBlockColor(new SBlock(), blockColorConfig));
+        assertEquals(0x800080, BlockController.getInstance().getBlockColor(new TBlock(), blockColorConfig));
+        assertEquals(0xff0000, BlockController.getInstance().getBlockColor(new ZBlock(), blockColorConfig));
     }
 
     @Test
@@ -89,7 +97,7 @@ class BlockControllerTest {
 
         for(int i=0;i<COUNT;i++){
 
-            Block value = getRandomItem();
+            Block value = BlockController.getInstance().getRandomItem(difficultyConfig);
 
             if(value instanceof BombItem){
                 Bombcnt++;
@@ -112,14 +120,14 @@ class BlockControllerTest {
 
     @Test
     void getLineRemoverItem() {
-        Block value = getLineRemoverItem();
+        Block value = BlockController.getInstance().getLineRemoverItem(difficultyConfig);
 
         int[][] shape = value.getShape();
         boolean res = false;
 
         for(int x=0;x<shape.length;x++){
-            for(int y=0;j<shape[x].length;y++){
-                if(shpe[x][y] = Board.TYPE_LINE_REMOVER){
+            for(int y=0;y<shape[x].length;y++){
+                if(shape[x][y] == Board.TYPE_LINE_REMOVER){
                     res = true;
                 }
             }
