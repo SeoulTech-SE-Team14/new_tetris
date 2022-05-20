@@ -292,7 +292,7 @@ public class GamePanel extends JPanel {
         }
 
         updateTimer.start();
-        System.out.println(periodInterval);
+        //System.out.println(periodInterval);
     }
 
     public void updatePreviewBoard() {
