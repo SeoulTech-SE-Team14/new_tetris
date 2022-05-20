@@ -2,6 +2,7 @@ package domain.block.controller;
 
 import domain.block.entity.tetromino.*;
 import domain.board.controller.BoardController;
+import domain.config.controller.DifficultyConfigController;
 import domain.config.entity.BlockColorConfig;
 import domain.config.entity.DifficultyConfig;
 import org.junit.jupiter.api.BeforeEach;
@@ -69,17 +70,90 @@ class BlockControllerTest {
         assertTrue(Math.abs((double)scnt-percentage)<=criteria);
         assertTrue(Math.abs((double)tcnt-percentage)<=criteria);
         assertTrue(Math.abs((double)zcnt-percentage)<=criteria);
+
+        icnt = 0;
+        jcnt = 0;
+        lcnt = 0;
+        ocnt = 0;
+        scnt = 0;
+        tcnt = 0;
+        zcnt = 0;
+        difficultyConfig = DifficultyConfigController.getInstance().getHard();
+        percentage+=3;
+        for(int i=0;i<COUNT;i++){
+            Block value = BlockController.getInstance().getRandomBlock(difficultyConfig);
+
+            if(value instanceof IBlock){
+                icnt++;
+            }else if(value instanceof JBlock){
+                jcnt++;
+            }else if(value instanceof LBlock){
+                lcnt++;
+            }else if(value instanceof OBlock){
+                ocnt++;
+            }else if(value instanceof SBlock){
+                scnt++;
+            }else if(value instanceof TBlock){
+                tcnt++;
+            }else if(value instanceof ZBlock){
+                zcnt++;
+            }
+        }
+        assertTrue(Math.abs((double)icnt-percentage*0.8)<=criteria);
+        assertTrue(Math.abs((double)jcnt-percentage)<=criteria);
+        assertTrue(Math.abs((double)lcnt-percentage)<=criteria);
+        assertTrue(Math.abs((double)ocnt-percentage)<=criteria);
+        assertTrue(Math.abs((double)scnt-percentage)<=criteria);
+        assertTrue(Math.abs((double)tcnt-percentage)<=criteria);
+        assertTrue(Math.abs((double)zcnt-percentage)<=criteria);
+
+        icnt = 0;
+        jcnt = 0;
+        lcnt = 0;
+        ocnt = 0;
+        scnt = 0;
+        tcnt = 0;
+        zcnt = 0;
+        difficultyConfig = DifficultyConfigController.getInstance().getEasy();
+        percentage-=6;
+        for(int i=0;i<COUNT;i++){
+            Block value = BlockController.getInstance().getRandomBlock(difficultyConfig);
+
+            if(value instanceof IBlock){
+                icnt++;
+            }else if(value instanceof JBlock){
+                jcnt++;
+            }else if(value instanceof LBlock){
+                lcnt++;
+            }else if(value instanceof OBlock){
+                ocnt++;
+            }else if(value instanceof SBlock){
+                scnt++;
+            }else if(value instanceof TBlock){
+                tcnt++;
+            }else if(value instanceof ZBlock){
+                zcnt++;
+            }
+        }
+        assertTrue(Math.abs((double)icnt-percentage*1.2)<=criteria);
+        assertTrue(Math.abs((double)jcnt-percentage)<=criteria);
+        assertTrue(Math.abs((double)lcnt-percentage)<=criteria);
+        assertTrue(Math.abs((double)ocnt-percentage)<=criteria);
+        assertTrue(Math.abs((double)scnt-percentage)<=criteria);
+        assertTrue(Math.abs((double)tcnt-percentage)<=criteria);
+        assertTrue(Math.abs((double)zcnt-percentage)<=criteria);
+
     }
 
     @Test
     void getBlockColor() {
-        assertEquals(0x00ffff, BlockController.getInstance().getBlockColor(new IBlock(), blockColorConfig));
-        assertEquals(0x0000ff, BlockController.getInstance().getBlockColor(new JBlock(), blockColorConfig));
-        assertEquals(0xff7f00, BlockController.getInstance().getBlockColor(new LBlock(), blockColorConfig));
-        assertEquals(0xffff00, BlockController.getInstance().getBlockColor(new OBlock(), blockColorConfig));
-        assertEquals(0x00ff00, BlockController.getInstance().getBlockColor(new SBlock(), blockColorConfig));
-        assertEquals(0x800080, BlockController.getInstance().getBlockColor(new TBlock(), blockColorConfig));
-        assertEquals(0xff0000, BlockController.getInstance().getBlockColor(new ZBlock(), blockColorConfig));
+        assertEquals(BlockController.getInstance().getBlockColor(new IBlock(), blockColorConfig), 0x00ffff);
+        assertEquals(BlockController.getInstance().getBlockColor(new JBlock(), blockColorConfig), 0x0000ff);
+        assertEquals(BlockController.getInstance().getBlockColor(new LBlock(), blockColorConfig), 0xff7f00);
+        assertEquals(BlockController.getInstance().getBlockColor(new OBlock(), blockColorConfig), 0xffff00);
+        assertEquals(BlockController.getInstance().getBlockColor(new SBlock(), blockColorConfig), 0x00ff00);
+        assertEquals(BlockController.getInstance().getBlockColor(new TBlock(), blockColorConfig), 0x800080);
+        assertEquals(BlockController.getInstance().getBlockColor(new ZBlock(), blockColorConfig), 0xff0000);
     }
 
     @Test
@@ -105,10 +179,20 @@ class BlockControllerTest {
                 Bonuscnt++;
             }else if(value instanceof DrillItem){
                 Drillcnt++;
-            }else if(value instanceof LineRemoverItem){
-                Linecnt++;
             }else if(value instanceof WeightItem){
                 Weightcnt++;
+            }else{
+                int[][] shape = value.getShape();
+                boolean res = false;
+                for(int x=0;x<shape.length;x++){
+                    for(int y=0;y<shape[x].length;y++){
+                        if(shape[x][y] == Board.TYPE_LINE_REMOVER){
+                            res = true;
+                        }
+                    }
+                }
+                if(res)
+                    Linecnt++;
             }
         }
         assertTrue(Math.abs((double)Bombcnt-percentage)<=criteria);
