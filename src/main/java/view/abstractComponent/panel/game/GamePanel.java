@@ -292,7 +292,7 @@ public class GamePanel extends JPanel {
         }
 
         updateTimer.start();
-
+        System.out.println(periodInterval);
     }
 
     public void updatePreviewBoard() {
@@ -397,6 +397,11 @@ public class GamePanel extends JPanel {
 
     public List<Integer> findFullLine() {
         return boardPanel.findFullLine();
+    }
+
+    public void gameExit() {
+        updateTimer.stop();
+        redrawTimer.stop();
     }
 
     public static void main(String[] args) {

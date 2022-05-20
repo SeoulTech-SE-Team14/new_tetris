@@ -26,6 +26,7 @@ public class ScoreUsernameInputFrame extends DefaultFrame {
         setLayout(gl);
 
         label = new JLabel(labelText);
+        label.setHorizontalAlignment(JLabel.CENTER);
         scoreDetailsPanel = new ScoreDetailsPanel(score);
         input = new JTextField();
 

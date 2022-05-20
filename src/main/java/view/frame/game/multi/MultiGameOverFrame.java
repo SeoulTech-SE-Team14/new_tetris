@@ -34,11 +34,13 @@ public class MultiGameOverFrame extends DefaultFrame {
         exitButton = new JButton(buttonText);
         
         if (p1Score.getScore() > p2Score.getScore())
-        label = new JLabel("Player 1 승리");
+            label = new JLabel("Player 1 승리");
         else if (p1Score.getScore() < p2Score.getScore())
-        label = new JLabel("Player 2 승리");
+            label = new JLabel("Player 2 승리");
         else
-        label = new JLabel("무승부");
+            label = new JLabel("무승부");
+
+        label.setHorizontalAlignment(JLabel.CENTER);
 
         scoresPanel = new JPanel();
         scoresPanel.setLayout(gl);

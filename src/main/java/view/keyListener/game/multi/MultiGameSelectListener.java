@@ -1,6 +1,6 @@
 package view.keyListener.game.multi;
 
-import view.frame.game.GameModeSelectFrame;
+import view.frame.IndexFrame;
 import view.frame.game.multi.MultiGameFrame;
 import view.frame.game.multi.MultiGameSelectFrame;
 
@@ -30,8 +30,8 @@ public class MultiGameSelectListener  extends KeyAdapter {
         switch (frame.getFocusIndex()) {
             case 0: frame.dispose(); new MultiGameFrame(); break; // 일반
             case 1: frame.dispose(); new MultiGameFrame("Item"); break; // 아이템
-            case 2: frame.dispose(); new MultiGameFrame(60); break; // 듀얼
-            case 3: frame.dispose(); new GameModeSelectFrame(); break;
+            case 2: frame.dispose(); new MultiGameFrame(120); break; // 듀얼
+            case 3: frame.dispose(); new IndexFrame(); break;
         }
     }
 }

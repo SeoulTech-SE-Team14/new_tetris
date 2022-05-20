@@ -33,6 +33,7 @@ public class ScoreBoardFrame extends DefaultFrame {
         
         addKeyListener(new ScoreBoardKeyListener(this));
 
+        label.setHorizontalAlignment(JLabel.CENTER);
         decorateComponent(label);
         decorateComponent(exiButton);
 

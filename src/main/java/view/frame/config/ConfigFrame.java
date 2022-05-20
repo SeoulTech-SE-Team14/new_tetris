@@ -44,6 +44,7 @@ public class ConfigFrame extends DefaultFrame {
 
         title.setBackground(Color.BLACK);
         title.setForeground(Color.WHITE);
+        title.setHorizontalAlignment(JLabel.CENTER);
 
         add(title);
 

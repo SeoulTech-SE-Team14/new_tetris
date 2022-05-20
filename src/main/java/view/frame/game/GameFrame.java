@@ -59,6 +59,8 @@ public class GameFrame extends DefaultFrame {
     }
 
     public void gameExit() {
+        gamePanel.gameExit();
+        
         updateTimer.stop();
         Score score = gamePanel.getScore();
         new ScoreUsernameInputFrame(score);

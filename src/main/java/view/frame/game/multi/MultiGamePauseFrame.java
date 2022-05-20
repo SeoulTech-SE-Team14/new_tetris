@@ -32,6 +32,7 @@ public class MultiGamePauseFrame extends ButtonMoveFrame {
         title = new JLabel(titleText);
         title.setFont(font);
         title.setForeground(Color.WHITE);
+        title.setHorizontalAlignment(JLabel.CENTER);
         add(title, BorderLayout.NORTH);
 
         buttons = new JButton[] {

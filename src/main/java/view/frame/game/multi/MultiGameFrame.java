@@ -89,6 +89,7 @@ public class MultiGameFrame extends DefaultFrame {
         Font font = new Font("Noto sans", Font.BOLD, 30);
         label.setFont(font);
         label.setForeground(Color.WHITE);
+        label.setHorizontalAlignment(JLabel.CENTER);
     }
 
     public void initPanel(){
@@ -100,8 +101,8 @@ public class MultiGameFrame extends DefaultFrame {
         centerPanel = new JPanel();
         centerPanel.setLayout(gl);
 
-        centerPanel.add(p1GamePanel);
         centerPanel.add(p2GamePanel);
+        centerPanel.add(p1GamePanel);
     }
 
     public void addComponents(){
@@ -128,6 +129,9 @@ public class MultiGameFrame extends DefaultFrame {
     }
 
     public void gameExit() {
+        p1GamePanel.gameExit();
+        p2GamePanel.gameExit();
+
         if (isTimeLimitMode)
             timeLimitTimer.stop();
         updatTimer.stop();
