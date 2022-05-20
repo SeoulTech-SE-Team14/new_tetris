@@ -125,7 +125,7 @@ class ScoreControllerTest {
     @Test
     void setDifficulty() {
         ScoreController.getInstance().setDifficulty(score, "Hard");
-        String actual = score.getMode();
+        String actual = score.getDifficulty();
         assertEquals("Hard", actual);
     }
 }
