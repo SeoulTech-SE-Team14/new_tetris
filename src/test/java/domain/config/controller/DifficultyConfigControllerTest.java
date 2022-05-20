@@ -8,6 +8,7 @@ class DifficultyConfigControllerTest {
 
     @Test
     void getEasy() {
+
     }
 
     @Test
