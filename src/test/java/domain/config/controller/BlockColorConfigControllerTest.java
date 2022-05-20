@@ -13,13 +13,13 @@ class BlockColorConfigControllerTest {
     @Test
     void getDefault() {
         BlockColorConfig blockColorConfig = BlockColorConfigController.getInstance().getDefault();
-        assertEquals(0x00ffff, blockColorConfig.getiBlockColor());
-        assertEquals(0x0000ff, blockColorConfig.getjBlockColor());
-        assertEquals(0xff7f00, blockColorConfig.getlBlockColor());
-        assertEquals(0xffff00, blockColorConfig.getoBlockColor());
-        assertEquals(0x00ff00, blockColorConfig.getsBlockColor());
-        assertEquals(0x800080, blockColorConfig.gettBlockColor());
-        assertEquals(0xff0000, blockColorConfig.getzBlockColor());
+        assertEquals(blockColorConfig.getiBlockColor(), 0x00ffff);
+        assertEquals(blockColorConfig.getjBlockColor(), 0x0000ff);
+        assertEquals(blockColorConfig.getlBlockColor(), 0xff7f00);
+        assertEquals(blockColorConfig.getoBlockColor(), 0xffff00);
+        assertEquals(blockColorConfig.getsBlockColor(), 0x00ff00);
+        assertEquals(blockColorConfig.gettBlockColor(), 0x800080);
+        assertEquals(blockColorConfig.getzBlockColor(), 0xff0000);
     }
 
     @Test
@@ -49,46 +49,53 @@ class BlockColorConfigControllerTest {
     @Test
     void getCurrentConfig() {
 
-//        BlockColorConfigController blockColorConfig = BlockColorConfigController.getInstance();
-//        BlockColorConfig value = blockColorConfig.getCurrentConfig();
-//        assertEquals(value.getiBlockColor(), blockColorConfig.getiBlockColor());
-//        assertEquals(value.getjBlockColor(), blockColorConfig.getiBlockColor());
-//        assertEquals(value.getlBlockColor(), blockColorConfig.getiBlockColor());
-//        assertEquals(value.getoBlockColor(), blockColorConfig.getiBlockColor());
-//        assertEquals(value.getsBlockColor(), blockColorConfig.getiBlockColor());
-//        assertEquals(value.gettBlockColor(), blockColorConfig.getiBlockColor());
-//        assertEquals(value.getzBlockColor(), blockColorConfig.getiBlockColor());
-//        value = blockColorConfig.getCurrentConfig();
-//        getProtanopia();
-//        assertEquals(value.getiBlockColor(), blockColorConfig.getiBlockColor());
-//        assertEquals(value.getjBlockColor(), blockColorConfig.getiBlockColor());
-//        assertEquals(value.getlBlockColor(), blockColorConfig.getiBlockColor());
-//        assertEquals(value.getoBlockColor(), blockColorConfig.getiBlockColor());
-//        assertEquals(value.getsBlockColor(), blockColorConfig.getiBlockColor());
-//        assertEquals(value.gettBlockColor(), blockColorConfig.getiBlockColor());
-//        assertEquals(value.getzBlockColor(), blockColorConfig.getiBlockColor());
+        BlockColorConfigController blockColorConfig = BlockColorConfigController.getInstance();
+        BlockColorConfig value = blockColorConfig.getDefault();
+
+        assertEquals(value.getiBlockColor(), 0x00ffff);
+        assertEquals(value.getjBlockColor(), 0x0000ff);
+        assertEquals(value.getlBlockColor(), 0xff7f00);
+        assertEquals(value.getoBlockColor(), 0xffff00);
+        assertEquals(value.getsBlockColor(), 0x00ff00);
+        assertEquals(value.gettBlockColor(), 0x800080);
+        assertEquals(value.getzBlockColor(), 0xff0000);
+
+        blockColorConfig.update(blockColorConfig.getProtanopia());
+        value = blockColorConfig.getCurrentConfig();
+
+        assertEquals(value.getiBlockColor(), ProtanopiaBlockColor.IBLOCK.getColor());
+        assertEquals(value.getjBlockColor(), ProtanopiaBlockColor.JBLOCK.getColor());
+        assertEquals(value.getlBlockColor(), ProtanopiaBlockColor.LBLOCK.getColor());
+        assertEquals(value.getoBlockColor(), ProtanopiaBlockColor.OBLOCK.getColor());
+        assertEquals(value.getsBlockColor(), ProtanopiaBlockColor.SBLOCK.getColor());
+        assertEquals(value.gettBlockColor(), ProtanopiaBlockColor.TBLOCK.getColor());
+        assertEquals(value.getzBlockColor(), ProtanopiaBlockColor.ZBLOCK.getColor());
 
     }
 
     @Test
     void update() {
-//        BlockColorConfig blockColorConfig = BlockColorConfigController.getInstance();
-//        BlockColorConfig value = blockColorConfig.getCurrentConfig();
-//        assertEquals(value.getiBlockColor(), blockColorConfig.getiBlockColor());
-//        assertEquals(value.getjBlockColor(), blockColorConfig.getiBlockColor());
-//        assertEquals(value.getlBlockColor(), blockColorConfig.getiBlockColor());
-//        assertEquals(value.getoBlockColor(), blockColorConfig.getiBlockColor());
-//        assertEquals(value.getsBlockColor(), blockColorConfig.getiBlockColor());
-//        assertEquals(value.gettBlockColor(), blockColorConfig.getiBlockColor());
-//        assertEquals(value.getzBlockColor(), blockColorConfig.getiBlockColor());
-//        value = blockColorConfig.getCurrentConfig();
-//        getProtanopia();
-//        assertEquals(value.getiBlockColor(), blockColorConfig.getiBlockColor());
-//        assertEquals(value.getjBlockColor(), blockColorConfig.getiBlockColor());
-//        assertEquals(value.getlBlockColor(), blockColorConfig.getiBlockColor());
-//        assertEquals(value.getoBlockColor(), blockColorConfig.getiBlockColor());
-//        assertEquals(value.getsBlockColor(), blockColorConfig.getiBlockColor());
-//        assertEquals(value.gettBlockColor(), blockColorConfig.getiBlockColor());
-//        assertEquals(value.getzBlockColor(), blockColorConfig.getiBlockColor());
+
+        BlockColorConfigController blockColorConfig = BlockColorConfigController.getInstance();
+        BlockColorConfig value = blockColorConfig.getDefault();
+
+        assertEquals(value.getiBlockColor(), 0x00ffff);
+        assertEquals(value.getjBlockColor(), 0x0000ff);
+        assertEquals(value.getlBlockColor(), 0xff7f00);
+        assertEquals(value.getoBlockColor(), 0xffff00);
+        assertEquals(value.getsBlockColor(), 0x00ff00);
+        assertEquals(value.gettBlockColor(), 0x800080);
+        assertEquals(value.getzBlockColor(), 0xff0000);
+
+        blockColorConfig.update(blockColorConfig.getProtanopia());
+        value = blockColorConfig.getCurrentConfig();
+
+        assertEquals(value.getiBlockColor(), ProtanopiaBlockColor.IBLOCK.getColor());
+        assertEquals(value.getjBlockColor(), ProtanopiaBlockColor.JBLOCK.getColor());
+        assertEquals(value.getlBlockColor(), ProtanopiaBlockColor.LBLOCK.getColor());
+        assertEquals(value.getoBlockColor(), ProtanopiaBlockColor.OBLOCK.getColor());
+        assertEquals(value.getsBlockColor(), ProtanopiaBlockColor.SBLOCK.getColor());
+        assertEquals(value.gettBlockColor(), ProtanopiaBlockColor.TBLOCK.getColor());
+        assertEquals(value.getzBlockColor(), ProtanopiaBlockColor.ZBLOCK.getColor());
     }
 }
