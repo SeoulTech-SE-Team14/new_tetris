@@ -6,6 +6,7 @@ import domain.config.controller.DifficultyConfigController;
 import domain.config.entity.BlockColorConfig;
 import domain.config.entity.DifficultyConfig;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import domain.block.entity.Block;
@@ -29,7 +30,58 @@ class BlockControllerTest {
         blockColorConfig = new BlockColorConfig();
     }
     @Test
-    void getRandomBlock() {
+    @DisplayName("이지모드 블럭생성")
+    void testGetEasyModeRandomBlock() {
+        difficultyConfig = DifficultyConfigController.getInstance().getEasy();
+
+        final int COUNT = 1000;
+        
+        int icnt = 0;
+        int jcnt = 0;
+        int lcnt = 0;
+        int ocnt = 0;
+        int scnt = 0;
+        int tcnt = 0;
+        int zcnt = 0;
+
+        double percentage = (double)COUNT / 7;
+        percentage-=3;
+        double criteria = (double)COUNT / 100 * 5;
+
+        for(int i=0;i<COUNT;i++){
+
+            Block value = BlockController.getInstance().getRandomBlock(difficultyConfig);
+
+            if(value instanceof IBlock){
+                icnt++;
+            }else if(value instanceof JBlock){
+                jcnt++;
+            }else if(value instanceof LBlock){
+                lcnt++;
+            }else if(value instanceof OBlock){
+                ocnt++;
+            }else if(value instanceof SBlock){
+                scnt++;
+            }else if(value instanceof TBlock){
+                tcnt++;
+            }else if(value instanceof ZBlock){
+                zcnt++;
+            }
+        }
+        assertTrue(Math.abs((double)icnt-percentage) * 0.8 <=criteria);
+        assertTrue(Math.abs((double)jcnt-percentage)<=criteria);
+        assertTrue(Math.abs((double)lcnt-percentage)<=criteria);
+        assertTrue(Math.abs((double)ocnt-percentage)<=criteria);
+        assertTrue(Math.abs((double)scnt-percentage)<=criteria);
+        assertTrue(Math.abs((double)tcnt-percentage)<=criteria);
+        assertTrue(Math.abs((double)zcnt-percentage)<=criteria);
+
+    }
+    @Test
+    @DisplayName("일반모드 블럭생성")
+    void testGetNormalModeRandomBlock() {
+         difficultyConfig = DifficultyConfigController.getInstance().getNormal();
+        
         final int COUNT = 1000;
         
         int icnt = 0;
@@ -70,17 +122,28 @@ class BlockControllerTest {
         assertTrue(Math.abs((double)scnt-percentage)<=criteria);
         assertTrue(Math.abs((double)tcnt-percentage)<=criteria);
         assertTrue(Math.abs((double)zcnt-percentage)<=criteria);
-
-        icnt = 0;
-        jcnt = 0;
-        lcnt = 0;
-        ocnt = 0;
-        scnt = 0;
-        tcnt = 0;
-        zcnt = 0;
+    }
+    @Test
+    @DisplayName("하드모드 블럭생성")
+    void testGetHardModeRandomBlock() {
         difficultyConfig = DifficultyConfigController.getInstance().getHard();
+        
+        final int COUNT = 1000;
+        
+        int icnt = 0;
+        int jcnt = 0;
+        int lcnt = 0;
+        int ocnt = 0;
+        int scnt = 0;
+        int tcnt = 0;
+        int zcnt = 0;
+
+        double percentage = (double)COUNT / 7;
         percentage+=3;
+        double criteria = (double)COUNT / 100 * 5;
+
         for(int i=0;i<COUNT;i++){
+
             Block value = BlockController.getInstance().getRandomBlock(difficultyConfig);
 
             if(value instanceof IBlock){
@@ -99,50 +162,13 @@ class BlockControllerTest {
                 zcnt++;
             }
         }
-        assertTrue(Math.abs((double)icnt-percentage*0.8)<=criteria);
+        assertTrue(Math.abs((double)icnt-percentage)*1.2<=criteria);
         assertTrue(Math.abs((double)jcnt-percentage)<=criteria);
         assertTrue(Math.abs((double)lcnt-percentage)<=criteria);
         assertTrue(Math.abs((double)ocnt-percentage)<=criteria);
         assertTrue(Math.abs((double)scnt-percentage)<=criteria);
         assertTrue(Math.abs((double)tcnt-percentage)<=criteria);
         assertTrue(Math.abs((double)zcnt-percentage)<=criteria);
-
-        icnt = 0;
-        jcnt = 0;
-        lcnt = 0;
-        ocnt = 0;
-        scnt = 0;
-        tcnt = 0;
-        zcnt = 0;
-        difficultyConfig = DifficultyConfigController.getInstance().getEasy();
-        percentage-=6;
-        for(int i=0;i<COUNT;i++){
-            Block value = BlockController.getInstance().getRandomBlock(difficultyConfig);
-
-            if(value instanceof IBlock){
-                icnt++;
-            }else if(value instanceof JBlock){
-                jcnt++;
-            }else if(value instanceof LBlock){
-                lcnt++;
-            }else if(value instanceof OBlock){
-                ocnt++;
-            }else if(value instanceof SBlock){
-                scnt++;
-            }else if(value instanceof TBlock){
-                tcnt++;
-            }else if(value instanceof ZBlock){
-                zcnt++;
-            }
-        }
-        assertTrue(Math.abs((double)icnt-percentage*1.2)<=criteria);
-        assertTrue(Math.abs((double)jcnt-percentage)<=criteria);
-        assertTrue(Math.abs((double)lcnt-percentage)<=criteria);
-        assertTrue(Math.abs((double)ocnt-percentage)<=criteria);
-        assertTrue(Math.abs((double)scnt-percentage)<=criteria);
-        assertTrue(Math.abs((double)tcnt-percentage)<=criteria);
-        assertTrue(Math.abs((double)zcnt-percentage)<=criteria);
-
     }
 
     @Test

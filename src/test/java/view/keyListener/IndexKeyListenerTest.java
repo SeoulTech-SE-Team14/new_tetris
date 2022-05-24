@@ -35,6 +35,6 @@ class IndexKeyListenerTest {
                 .currentTimeMillis(), 0, KeyEvent.VK_UP, 'a');
         listener.keyPressed(key);
         listener.keyPressed(key);
-        assertEquals(2, frame.getFocusIndex());
+        assertEquals(4, frame.getFocusIndex());
     }
 }
