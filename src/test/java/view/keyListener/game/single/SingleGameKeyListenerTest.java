@@ -16,19 +16,19 @@ import static org.junit.jupiter.api.Assertions.*;
 class SingleGameKeyListenerTest {
     GameFrame gameFrame;
     SingleGameKeyListener listener;
-    KeyConfig keyConfig = KeyConfigController.getInstance().getCurrentConfig();
     @Test
     @DisplayName("1초에 몇 번 움직임이 그려지는지 테스트")
     void keyPressed() throws  InterruptedException {
+        KeyConfigController.getInstance().update(KeyConfigController.getInstance().getDefault());
         gameFrame = new GameFrame();
         listener = new SingleGameKeyListener(gameFrame);
         gameFrame.addKeyListener(listener);
         KeyEvent keyRight = new KeyEvent(gameFrame, KeyEvent.KEY_PRESSED, System
-                .currentTimeMillis(), 0, 54, 'a');
+                .currentTimeMillis(), 0, KeyEvent.VK_RIGHT, 'a');
         KeyEvent keyLeft = new KeyEvent(gameFrame, KeyEvent.KEY_PRESSED, System
-                .currentTimeMillis(), 0, 52, 'a');
+                .currentTimeMillis(), 0, KeyEvent.VK_LEFT, 'a');
         KeyEvent keyDown = new KeyEvent(gameFrame, KeyEvent.KEY_PRESSED, System
-                .currentTimeMillis(), 0, 53, 'a');
+                .currentTimeMillis(), 0, KeyEvent.VK_DOWN, 'a');
 
         gameFrame.getGamePanel().getBoardPanel().updateNowBlock(new TBlock());
         int count = 0;
